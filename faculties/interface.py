@@ -8,6 +8,7 @@ class interface:
     def __init__(self, name):
         self.name = name
         self.session = requests
+        self.orcid = "http://orcid.org/%s"
         self.base = self.index = self.pictures = self.courses = self.students = self.teachers= "not set for this faculty"
 
     def startSession(self, username, password):#creates a requests session to access protecte pages
@@ -26,6 +27,9 @@ class interface:
         print(notImplementedWarning % self.name)
 
     def findCourse(self, id):#creates a course instance from the course id
+        print(notImplementedWarning % self.name)
+
+    def findRoom(self, id):#creates a room instance from the room id
         print(notImplementedWarning % self.name)
 
     def evalSession(self, functionName):#checks if a valid session exists and exits if not
