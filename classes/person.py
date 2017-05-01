@@ -1,3 +1,6 @@
+import sys
+sys.path.append('../')
+from utils import constructString
 class person:
     def __init__(self, id="", name="unknown", emails = [], picture = None):
         self.id = id
@@ -6,5 +9,5 @@ class person:
         self.picture = picture
 
     def __str__(self):
-        return "ID%s - %s, emails:%s, picture=%s" % (self.id, self.name, tuple(self.emails), self.picture)
+        return constructString(self)
         
