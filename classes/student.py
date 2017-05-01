@@ -8,10 +8,11 @@ class student(person):
         super(student, self).__init__(id,name,emails,picture)
         self.courses = courses
 
-    def parse(self, html):
-        print("PARSE Student")
-        pass
-        
         
     def __str__(self):
-        return "UP%s - %s, emails:%s, picture=%s" % (self.id, self.name, tuple(self.emails), self.picture)
+        res = "UP%s - %s, emails:%s, picture=%s, courses (%d):\n" % (self.id, self.name, tuple(self.emails), self.picture, len(self.courses))
+        i=0
+        for c in self.courses:
+            i+=1
+            res += "\n\nCOURSE "+str(i)+"\n" + str(c)
+        return res
