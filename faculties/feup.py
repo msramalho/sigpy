@@ -1,9 +1,9 @@
-import sys
+import sys, shutil 
 sys.path.append('../')
 from faculties.interface import * 
 from classes.student import *
 from classes.teacher import *
-
+from classes.picture import *
 class faculty(interface):
     def __init__(self, name):
         super(faculty, self).__init__(name)
@@ -13,6 +13,7 @@ class faculty(interface):
         self.teachers = "https://sigarra.up.pt/feup/pt/func_geral.formview?p_codigo=%s"
         self.teachersSchedule = "https://sigarra.up.pt/feup/pt/hor_geral.docentes_view?pv_doc_codigo=%s"
         self.courses = "https://sigarra.up.pt/feup/pt/cur_geral.cur_view?pv_curso_id=%s&pv_ano_lectivo=%d"
+        self.pictures = "https://sigarra.up.pt/feup/pt/fotografias_service.foto?pct_cod=%s"
 
     def __str__(self):
         return "THIS IS FEUP"
@@ -74,6 +75,8 @@ class faculty(interface):
                 c.enrolled = tableRows[4].text
                 c.state = tableRows[5].text
             s.courses.append(c)
+        if self.loadPictures:
+            s.picture = self.getPicture(s.id)
         return s
 
     def findCourse(self, id, link = "", name = ""):#(done)creates a course instance from the course id
@@ -185,3 +188,20 @@ class faculty(interface):
         subjectLink = parsed_html.body.find_all('a', attrs={'href':re.compile('ucurr_geral\.ficha_uc_view\?pv_ocorrencia_id=.*')})
         print("FOUND: %d subjects" % len(subjectLink))
         
+
+    def getPicture(self, id, path = "", display = False, save = True):#reads the picture from the web and returns it, if it exists
+        r = self.session.get(self.pictures%str(id), stream=True)
+        if not path:
+            path = "./images/"
+        path += "%s.jpg" % str(id)
+        result = False
+        if r.status_code == 200:
+            with open(path, 'wb') as f:
+                r.raw.decode_content = True
+                shutil.copyfileobj(r.raw, f)
+            result = picture(os.path.abspath(path))
+            if display:
+                result.show()
+            if not save:
+                result.delete()
+        return result
