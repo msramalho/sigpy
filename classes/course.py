@@ -1,5 +1,9 @@
+import sys
+sys.path.append('../')
+from utils import constructString
+
 class course:
-    def __init__(self, initials="", id="", cod="", name="", degree="", type="", start="", duration="", subjectsLink="", director="", directorAdj=""):
+    def __init__(self, initials="", id="", cod="", name="", degree="", type="", start="", duration="", subjectsLink=[""], director="", directorAdj="", subjects = []):
         self.name = name
         self.initials = initials
         self.id = id
@@ -11,9 +15,10 @@ class course:
         self.start = start
         self.duration = duration
         self.subjectsLink = subjectsLink
+        self.subjects = subjects
     
-    def parse(self, html):
-        pass
+    def findSubjects(self, fac):
+        fac.findSubjects(self.subjectsLink)
 
     def __str__(self):
         return constructString(self)
