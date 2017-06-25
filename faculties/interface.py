@@ -32,6 +32,12 @@ class interface:
     def findRoom(self, id):#creates a room instance from the room id
         print(notImplementedWarning % self.name)
 
+    def findSubjects(self, id):#creates a subject instance from the subject id
+        print(notImplementedWarning % self.name)
+
+    def findSubject(self, id):#creates a subject instance from the subject id
+        print(notImplementedWarning % self.name)
+
     def evalSession(self, functionName):#checks if a valid session exists and exits if not
         if self.session == requests:
             print("\nERROR - The % function requires a user session\n call startSession(username, password) for this purpose" % functionName)
