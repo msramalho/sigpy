@@ -1,4 +1,4 @@
-import sys, requests, re
+import sys, requests, re, os
 sys.path.append('../')
 from utils import *
 from bs4 import BeautifulSoup
@@ -9,8 +9,8 @@ class interface:
         self.name = name
         self.session = requests
         self.orcid = "http://orcid.org/%s"
-        self.base = self.index = self.pictures = self.courses = self.students = self.teachers= "not set for this faculty"
-        self.loadCourses = self.loadTeachers = self.loadSubjects = defaultLoads
+        self.base = self.index = self.pictures = self.courses = self.students = self.teachers = self.pictures = "not set for this faculty"
+        self.loadCourses = self.loadTeachers = self.loadSubjects = self.loadPictures = defaultLoads
 
     def setLoad(self, name, value):
         self.__dict__[name] = value
@@ -20,9 +20,6 @@ class interface:
 
     def __str__(self):
         return notImplementedWarning % self.name
-
-    def getPicture(self, id=""):#reads the picture from the web and returns it, if it exists
-        print(notImplementedWarning % self.name)
 
     def findStudent(self, id):#sends get request for the student id and parses his/her information
         print(notImplementedWarning % self.name)
@@ -40,6 +37,9 @@ class interface:
         print(notImplementedWarning % self.name)
 
     def findSubject(self, id):#creates a subject instance from the subject id
+        print(notImplementedWarning % self.name)
+
+    def getPicture(self, id="", path = "", display = False, save = True):#reads the picture from the web and returns it, if it exists
         print(notImplementedWarning % self.name)
 
     def evalSession(self, functionName):#checks if a valid session exists and exits if not
