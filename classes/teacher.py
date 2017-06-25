@@ -3,9 +3,10 @@ sys.path.append('../')
 from classes.person import *
 
 class teacher(person):
-    def __init__(self, id="", name="unknown", emails = [], picture = None, initials = "", status="", orcid="", phone="", voip="", rooms=[], category="", career="", department = "", section = "", positions=[], description="", schedule = ""):
+    def __init__(self, id="", name="unknown", website="", emails = [], picture = None, initials = "", status="", orcid="", phone="", voip="", rooms=[], category="", career="", department = "", section = "", positions=[], description="", schedule = ""):
         super(teacher, self).__init__(id,name,emails,picture)
         self.initials = initials
+        self.website = website
         self.status = status
         self.orcid = orcid
         self.phone = phone
