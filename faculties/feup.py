@@ -17,7 +17,7 @@ class faculty(interface):
     def __str__(self):
         return "THIS IS FEUP"
 
-    def startSession(self, username, password):#creates a requests session to access protecte pages
+    def startSession(self, username, password):#(done) creates a requests session to access protected pages
         self.session = requests.Session()
         payload = {'p_user': username, 'p_pass': password}
         r = self.session.post('https://sigarra.up.pt/feup/pt/vld_validacao.validacao', params=payload)
@@ -26,7 +26,15 @@ class faculty(interface):
             return False
         return True
 
-    def findStudent(self, id, loadCourses = True):#sends get request for the student id and parses his/her information, is loadCourses is false only the name of the course will be loaded and not the other details
+    def completeCourse(self, c, nameHtml, loadTeachers = False):#(done) avoid duplicate code
+        p = re.compile(".*pv_curso_id=(\d+).*")
+        c.id = p.findall(nameHtml.a.get("href"))[0]
+        tempCourse = self.findCourse(c.id)#try to get this course
+        if tempCourse:#if it was successfully read
+            c.loadCourse(tempCourse, loadTeachers)#update the courseStudent with all the details read
+        return c
+
+    def findStudent(self, id, loadCourses = False, loadTeachers = False):#(done)sends get request for the student id and parses his/her information, if loadCourses is false only the name of the course will be loaded and not the other details, if loadTeachers is True the director of the courses will be loaded (if, of course, loadCourses is True)
         req = self.session.get(self.students % id)
         parsed_html = BeautifulSoup(req.text, "html.parser")
         if parsed_html.body.find('form', attrs={'name':'voltar'}):#check if this id matches a student
@@ -41,24 +49,35 @@ class faculty(interface):
         for ac in activeCourses:
             c = courseStudent()
             nameHtml = ac.find('div', attrs={'class':'estudante-lista-curso-nome'})
-            if nameHtml.a:
-                p = re.compile(".*pv_curso_id=(\d+).*")
-                c.id = p.findall(nameHtml.a.get("href"))[0]
-                tempCourse = self.findCourse(c.id, nameHtml.a.get("href"))#try to get this course
-                if tempCourse:#if it was successfully read
-                    c.loadCourse(tempCourse)#update the courseStudent with all the details read
+            if loadCourses and nameHtml.a:#if this has a link
+                c = self.completeCourse(c, nameHtml, loadTeachers)
             c.name = nameHtml.text
             c.institution = ac.find('div', attrs={'class':'estudante-lista-curso-instit'}).text
-            #get attributes that require sessions
+            #get attributes that require session
             if self.checkSession():
                 c.enrolled = ac.find("td", text="Ano da primeira inscrição:").find_next("td").text
                 c.year = ac.find("td", text="Ano curricular atual:").find_next("td").text
                 c.state = ac.find("td", text="Estado atual:").find_next("td").text
             
             s.courses.append(c)
+        #read inactive courses for this student
+        inactiveCourses = parsed_html.body.find_all('div', attrs={'class':'tabela-longa'})
+        for ic in inactiveCourses:
+            c = courseStudent()
+            nameHtml = ic.find('td', attrs={'class':['t','k']})
+            if loadCourses and nameHtml.a:#if this has a link
+                c = self.completeCourse(c, nameHtml, loadTeachers)
+            c.name = nameHtml.text
+            tableRows = ic.find('tr', attrs={'class':'i'}).find_all("td")
+            c.institution = tableRows[1].a["title"]
+            if self.checkSession():
+                c.enrolled = tableRows[4].text
+                c.state = tableRows[5].text
+            s.courses.append(c)
         return s
 
-    def findCourse(self, id, link = "", name = ""):#creates a course instance from the course id
+    def findCourse(self, id, link = "", name = "", loadTeachers = True):#(done)creates a course instance from the course id
+        print("Link(%s): %s" % (id, link))
         c = course(id = id)
         if link != "":#if the link for the course is passed, use it
             link = self.base + link
@@ -81,11 +100,11 @@ class faculty(interface):
             rowValue = row.find(attrs={'class': None})
             if rowType.text == "Código Oficial: ":
                 c.cod = rowValue.text
-            elif rowType.text == "Diretor: ":
+            elif rowType.text == "Diretor: " and loadTeachers:#find if loadTeachers is True
                 p = re.compile("pct_codigo=(.+)")#get the id from the regex
                 teacherId = p.findall(rowValue.a.get("href"))[0]
                 c.director = self.findTeacher(teacherId)
-            elif rowType.text == "Diretor Adjunto: ":
+            elif rowType.text == "Diretor Adjunto: " and loadTeachers:#find loadTeachers is True
                 p = re.compile("pct_codigo=(.+)")#get the id from the regex
                 teacherId = p.findall(rowValue.a.get("href"))[0]
                 c.directorAdj = self.findTeacher(teacherId)
@@ -103,20 +122,21 @@ class faculty(interface):
         #get Subjects link
         c.subjectsLink = self.base + parsed_html.body.find('h3', text = "Planos de Estudos").findNext("div", attrs={"class":"caixa-informativa"}).findNext("li").a.get("href")
         return c
-    def findTeacher(self, id, link ="", name=""):#sends get request for the teacher id and parses his/her information
+    def findTeacher(self, id, link ="", name=""):#(done)sends get request for the teacher id and parses his/her information
         req = self.session.get(self.teachers % id)
         parsed_html = BeautifulSoup(req.text, "html.parser")
         if parsed_html.body.find('form', attrs={'name':'voltar'}):#check if this id matches a student
             print("%s is not a valid id for a teacher at feup" % id)
             return None
-        #self, id="", name="unknown", emails = [], picture = None, initials = "", status="", orcid="", phone="", voip="", rooms=[], category="", department = "", positions=[], description=""
         t = teacher(id)
         t.emails = []
         t.positions = []
         teacherDetails = parsed_html.body.find_all('td', attrs={'class':'formulario-legenda'})
         for detail in teacherDetails:
             if detail.text == "Nome:":
-                t.name = detail.find_next("td").text
+                t.name = detail.find_next("td").text.strip()
+                websiteFind = parsed_html.body.find("a", attrs={"title":"Ligação à página pessoal de %s" % t.name})
+                t.website = websiteFind.get("href") if websiteFind else ""
             elif detail.text == "Sigla:":
                 t.initials = detail.find_next("td").text
             #elif detail.text == "Código:": #we already have this
@@ -154,4 +174,14 @@ class faculty(interface):
         return t
     def findRoom(self, id, name = ""):#creates a room instance from the room id
         print("ROOM %s - id: %s" % (name, id))
+    def findSubject(self, id):#creates a subject instance from the subject id
+        print(notImplementedWarning % self.name)
+    def findSubjects(self, url):#creates a subject instance from the subject id
+        req = self.session.get(url)
+        parsed_html = BeautifulSoup(req.text, "html.parser")
+        if parsed_html.body.find('form', attrs={'name':'voltar'}):#check if this id matches a student
+            print("%s is not a valid link for subjects at feup" % id)
+            return None
+        subjectLink = parsed_html.body.find_all('a', attrs={'href':re.compile('ucurr_geral\.ficha_uc_view\?pv_ocorrencia_id=.*')})
+        print("FOUND: %d subjects" % len(subjectLink))
         
