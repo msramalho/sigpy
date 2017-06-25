@@ -5,11 +5,15 @@ from bs4 import BeautifulSoup
 #this class defines all the variables and methods that the faculty class should implement
 notImplementedWarning = "\nMethod not implemented for %s module\n"
 class interface:
-    def __init__(self, name):
+    def __init__(self, name, defaultLoads = False):#defaultLoads is the value for the self.loadXXXX variables
         self.name = name
         self.session = requests
         self.orcid = "http://orcid.org/%s"
         self.base = self.index = self.pictures = self.courses = self.students = self.teachers= "not set for this faculty"
+        self.loadCourses = self.loadTeachers = self.loadSubjects = defaultLoads
+
+    def setLoad(self, name, value):
+        self.__dict__[name] = value
 
     def startSession(self, username, password):#creates a requests session to access protecte pages
         print(notImplementedWarning % self.name)

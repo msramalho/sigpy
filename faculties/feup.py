@@ -26,15 +26,15 @@ class faculty(interface):
             return False
         return True
 
-    def completeCourse(self, c, nameHtml, loadTeachers = False):#(done) avoid duplicate code
+    def completeCourse(self, c, nameHtml):#(done) avoid duplicate code
         p = re.compile(".*pv_curso_id=(\d+).*")
         c.id = p.findall(nameHtml.a.get("href"))[0]
         tempCourse = self.findCourse(c.id)#try to get this course
         if tempCourse:#if it was successfully read
-            c.loadCourse(tempCourse, loadTeachers)#update the courseStudent with all the details read
+            c.loadCourse(tempCourse)#update the courseStudent with all the details read
         return c
 
-    def findStudent(self, id, loadCourses = False, loadTeachers = False):#(done)sends get request for the student id and parses his/her information, if loadCourses is false only the name of the course will be loaded and not the other details, if loadTeachers is True the director of the courses will be loaded (if, of course, loadCourses is True)
+    def findStudent(self, id):#(done)sends get request for the student id and parses his/her information, if loadCourses is false only the name of the course will be loaded and not the other details, if loadTeachers is True the director of the courses will be loaded (if, of course, loadCourses is True)
         req = self.session.get(self.students % id)
         parsed_html = BeautifulSoup(req.text, "html.parser")
         if parsed_html.body.find('form', attrs={'name':'voltar'}):#check if this id matches a student
@@ -49,8 +49,8 @@ class faculty(interface):
         for ac in activeCourses:
             c = courseStudent()
             nameHtml = ac.find('div', attrs={'class':'estudante-lista-curso-nome'})
-            if loadCourses and nameHtml.a:#if this has a link
-                c = self.completeCourse(c, nameHtml, loadTeachers)
+            if self.loadCourses and nameHtml.a:#if this has a link
+                c = self.completeCourse(c, nameHtml)
             c.name = nameHtml.text
             c.institution = ac.find('div', attrs={'class':'estudante-lista-curso-instit'}).text
             #get attributes that require session
@@ -65,8 +65,8 @@ class faculty(interface):
         for ic in inactiveCourses:
             c = courseStudent()
             nameHtml = ic.find('td', attrs={'class':['t','k']})
-            if loadCourses and nameHtml.a:#if this has a link
-                c = self.completeCourse(c, nameHtml, loadTeachers)
+            if self.loadCourses and nameHtml.a:#if this has a link
+                c = self.completeCourse(c, nameHtml)
             c.name = nameHtml.text
             tableRows = ic.find('tr', attrs={'class':'i'}).find_all("td")
             c.institution = tableRows[1].a["title"]
@@ -76,7 +76,7 @@ class faculty(interface):
             s.courses.append(c)
         return s
 
-    def findCourse(self, id, link = "", name = "", loadTeachers = True):#(done)creates a course instance from the course id
+    def findCourse(self, id, link = "", name = ""):#(done)creates a course instance from the course id
         print("Link(%s): %s" % (id, link))
         c = course(id = id)
         if link != "":#if the link for the course is passed, use it
@@ -100,11 +100,11 @@ class faculty(interface):
             rowValue = row.find(attrs={'class': None})
             if rowType.text == "Código Oficial: ":
                 c.cod = rowValue.text
-            elif rowType.text == "Diretor: " and loadTeachers:#find if loadTeachers is True
+            elif rowType.text == "Diretor: " and self.loadTeachers:#find if loadTeachers is True
                 p = re.compile("pct_codigo=(.+)")#get the id from the regex
                 teacherId = p.findall(rowValue.a.get("href"))[0]
                 c.director = self.findTeacher(teacherId)
-            elif rowType.text == "Diretor Adjunto: " and loadTeachers:#find loadTeachers is True
+            elif rowType.text == "Diretor Adjunto: " and self.loadTeachers:#find loadTeachers is True
                 p = re.compile("pct_codigo=(.+)")#get the id from the regex
                 teacherId = p.findall(rowValue.a.get("href"))[0]
                 c.directorAdj = self.findTeacher(teacherId)
