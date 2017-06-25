@@ -28,6 +28,7 @@ def constructString(obj, indent = -1):
                     res.append("")#paragraph
             else:
                 res.append(constructStringVariable(indent, key, value))
+    res[:] = [item for item in res if item != '']#remove empty elements
     return "\n".join(res)
 
 
