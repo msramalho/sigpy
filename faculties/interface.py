@@ -3,6 +3,9 @@ import requests
 import re
 import os
 from getpass import getpass
+from lxml.html import fromstring
+from lxml.cssselect import CSSSelector as css
+
 sys.path.append('../')
 from utils import *
 from bs4 import BeautifulSoup
@@ -28,17 +31,46 @@ class interface:
         "auth_failed": "O conjunto utilizador/senha não é válido."
     }
 
+    classes = {
+        "student": {
+            "url": "student",
+            "attributes": {
+                "name": "div.estudante-info-nome",
+                "courses": { # TODO: decide how lists will be represented
+                    "css": "div.estudante-lista-curso-activo",
+                    "many" : "course"
+                }
+            }
+        }
+    }
+
     def __init__(self, name, defaultLoads=False):  # defaultLoads is the value for the self.loadXXXX variables
         self.name = name
         self.session = requests
         self.loadCourses = self.loadTeachers = self.loadSubjects = self.loadPictures = defaultLoads
         self.picturesFolder = "./images/"
 
+    def test(self):
+        req = self.session.get(interface.routes["student"] % id)
+        # print(req.text)
+        tree = fromstring(req.text)
+        sel = css("div#rodape")
+        print(str(sel(tree)))
+        print(tree.cssselect("div#rodape")[0].text_content())
+
+    def getStudent(self, id):
+        conf = interface.classes["student"]
+        req = self.session.get(interface.routes[conf["url"]] % id)
+        tree = fromstring(req.text)
+        for attr, css in conf["attributes"].items():
+            print("%s: %s" % (attr, tree.cssselect(css)[0].text_content()))
+
+
+
     def setLoad(self, name, value):
         self.__dict__[name] = value
 
     def startSession(self, username, password=None):  # creates a requests session to access protected pages
-        print(interface.routes)
         if password is None:
             password = getpass("Password for %s?\n" % username)
         self.session = requests.Session()

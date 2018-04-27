@@ -20,15 +20,6 @@ class faculty(interface):
     def __init__(self, name):
         super(faculty, self).__init__(name)
 
-        self.base = "https://sigarra.up.pt/feup/pt/"
-        self.index = "https://sigarra.up.pt/feup/pt/web_page.Inicial"
-        self.students = "https://sigarra.up.pt/feup/pt/fest_geral.cursos_list?pv_num_unico=%s"
-        self.teachers = "https://sigarra.up.pt/feup/pt/func_geral.formview?p_codigo=%s"
-        self.teachersSchedule = "https://sigarra.up.pt/feup/pt/hor_geral.docentes_view?pv_doc_codigo=%s"
-        self.courses = "https://sigarra.up.pt/feup/pt/cur_geral.cur_view?pv_curso_id=%s&pv_ano_lectivo=%d"
-        self.pictures = "https://sigarra.up.pt/feup/pt/fotografias_service.foto?pct_cod=%s"
-        self.picturesFolder = "./images/"
-
     def __str__(self):
         return "THIS IS FEUP"
 
