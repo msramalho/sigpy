@@ -32,5 +32,4 @@ def constructString(obj, indent = -1):
     return "\n".join(res)
 
 
-
 #TODO:  function that removes all the expected but irrelevant html from a string to optimize regex search time and all that
