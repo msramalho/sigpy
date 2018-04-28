@@ -1,13 +1,13 @@
 import sys
 sys.path.append('../')
+from classes.model import model
 from utils import constructString
-class person:
-    def __init__(self, id="", name="unknown", emails = [], picture = None):
-        self.id = id
-        self.name = name
-        self.emails = emails
-        self.picture = picture
 
-    def __str__(self):
-        return constructString(self)
-        
+
+class person(model):
+    def __init__(self, dictionary):
+        super(person, self).__init__(dictionary)
+        # self.id = id
+        # self.name = name
+        # self.emails = emails
+        # self.picture = picture
