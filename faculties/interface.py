@@ -15,30 +15,79 @@ from classes.student import *
 # this class defines all the variables and methods that the faculty class should implement
 notImplementedWarning = "\nMethod not implemented for %s module\n"
 
+# ROUTE PARSING FUCTIONS
 
-def newClassFromDict(class_name, dictionary):
+# given a class name and a dict of attribute->value, create a new class (child of model)
+# all the possibilities must be imported (TODO: use __init__.py)
+
+
+def get_class_from_dict(class_name, dictionary):
     klass = globals()[class_name]
     return klass(dictionary)
 
+# given an lxml tree and a config dict with a "regex" key, get its value
 
-def tryRegex(tree, config):
+
+def parse_regex(tree, config):
+    index = config["index"] if "index" in config else 1
     res = re.search(config["regex"], etree.tostring(tree).decode("utf-8"))
     if res:
-        return res.group(1)
+        return res.group(index)
     return None
 
 
-def tryCss(tree, config):
+# given an lxml tree and a config dict with a "css" key, get its value
+def parse_css(tree, config):
     index = config["index"] if "index" in config else 0
     return tree.cssselect(config["css"])[index].text_content().strip()
 
 
-def tryXpath(tree, config):
+# given an lxml tree and a config dict with a "xpath" key, get its value
+def parse_xpath(tree, config):
     index = config["index"] if "index" in config else 0
     el = tree.xpath(config["xpath"])[index]
     if isinstance(el, HtmlElement):
         el = el.text_content()
     return el.strip()
+
+
+# given an lxml tree and a config dict with one of [css, regex, xpath] key, get its value
+def parse_attribute(tree, config):
+    if "css" in config:  # this is an attribute from css
+        return parse_css(tree, config)
+    elif "regex" in config:  # this is an attribute from regex
+        return parse_regex(tree, config)
+    elif "xpath" in config:
+        return parse_xpath(tree, config)
+
+
+def parse_element(tree, config):
+    if "css" in config:  # this is an attribute from css
+        return tree.cssselect(config["css"])
+    # elif "regex" in config:  # this is an attribute from regex I DO NOT THINK THIS IS POSSIBLE
+        # return parse_regex(tree, config)
+    elif "xpath" in config:
+        return tree.xpath(config)
+
+
+# given an lxml element and a config, parse a class's attributes and create a new class from them
+def parse_class(element, config):
+    d = parse_attributes(element, config["attributes"])
+    return get_class_from_dict(config["class"], d)
+
+
+def parse_attributes(tree, attributes):
+    res = {}
+    for attr, config in attributes.items():
+        if "class" not in config:  # this is a simple attr with direct css
+            res[attr] = parse_attribute(tree, config)
+        elif "class" in config:  # handle classes
+            element = parse_element(tree, config)
+            if "list" in config:  # handle list of said class
+                res[attr] = [parse_class(e, config) for e in element]
+            else:  # handle single element of that class
+                res[attr] = parse_class(element, config)
+    return res
 
 
 class interface:
@@ -97,42 +146,14 @@ class interface:
     def __init__(self):  # defaultLoads is the value for the self.loadXXXX variables
         self.session = requests
 
-    # def test(self):
-    #     req = self.session.get(interface.routes["student"] % id)
-    #     # print(req.text)
-    #     tree = fromstring(req.text)
-    #     sel = css("div#rodape")
-    #     print(str(sel(tree)))
-    #     print(tree.cssselect("div#rodape")[0].text_content())
+    def getClass(self, class_name, route_tuple):
+        conf = interface.classes[class_name]
+        req = self.session.get(interface.routes[conf["url"]] % route_tuple)
+        tree = fromstring(req.text)
+        return get_class_from_dict(class_name, parse_attributes(tree, conf["attributes"]))
 
     def getStudent(self, id):
-        conf = interface.classes["student"]
-        req = self.session.get(interface.routes[conf["url"]] % id)
-        tree = fromstring(req.text)
-        return newClassFromDict("student", self.parseAttributes(tree, conf["attributes"]))
-
-    def parseAttributes(self, tree, attributes):
-        res = {}
-        for attr, config in attributes.items():
-            if "class" not in config:  # this is a simple attr with direct css
-                if "css" in config:  # this is an attribute from css
-                    res[attr] = tryCss(tree, config)
-                elif "regex" in config:  # this is an attribute from regex
-                    res[attr] = tryRegex(tree, config)
-                elif "xpath" in config:
-                    res[attr] = tryXpath(tree, config)
-            elif "class" in config:  # handle classes
-                element = tree.cssselect(config["css"])
-                if "list" in config:  # handle list of said class
-                    l = []  # list of class objects
-                    for e in element:
-                        d = self.parseAttributes(e, config["attributes"])
-                        l.append(newClassFromDict(config["class"], d))
-                    res[attr] = l
-                else:  # handle single element of that class
-                    d = self.parseAttributes(element, config["attributes"])
-                    res[attr] = newClassFromDict(config["class"], d)
-        return res
+        return self.getClass("student", (id))
 
     def setLoad(self, name, value):
         self.__dict__[name] = value
