@@ -5,8 +5,10 @@ from classes.student import *
 from classes.teacher import *
 from classes.picture import *
 class faculty(interface):
-    def __init__(self, name):
-        super(faculty, self).__init__(name)
+    name = "fmup"
+
+    def __init__(self):
+        super(faculty, self).__init__()
         self.base = "https://sigarra.up.pt/fmup/pt/"
         self.index = "https://sigarra.up.pt/fmup/pt/web_page.Inicial"
         self.students = "https://sigarra.up.pt/fmup/pt/fest_geral.cursos_list?pv_num_unico=%s"

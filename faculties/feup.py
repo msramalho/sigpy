@@ -9,6 +9,8 @@ from classes.picture import *
 
 
 class faculty(interface):
+    name = "feup"
+
     interface.routes["base"] = "https://sigarra.up.pt/feup/pt/"
     interface.routes["index"] = "https://sigarra.up.pt/feup/pt/web_page.Inicial"
     interface.routes["student"] = "https://sigarra.up.pt/feup/pt/fest_geral.cursos_list?pv_num_unico=%s"
@@ -17,8 +19,8 @@ class faculty(interface):
     interface.routes["course"] = "https://sigarra.up.pt/feup/pt/cur_geral.cur_view?pv_curso_id=%s&pv_ano_lectivo=%d"
     interface.routes["picture"] = "https://sigarra.up.pt/feup/pt/fotografias_service.foto?pct_cod=%s"
 
-    def __init__(self, name):
-        super(faculty, self).__init__(name)
+    def __init__(self):
+        super(faculty, self).__init__()
 
     def __str__(self):
         return "THIS IS FEUP"

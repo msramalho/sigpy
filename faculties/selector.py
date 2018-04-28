@@ -7,4 +7,4 @@ def getFaculty(faculty = "feup"):
         print("The faculty %s has no file to import" % faculty)
         exit(1)
     mod = importlib.import_module("faculties.%s"%faculty)#import the correct file
-    return mod.faculty(faculty)
+    return mod.faculty()
