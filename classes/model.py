@@ -10,7 +10,8 @@ class JsonClassEncoder(json.JSONEncoder):
 
 
 class model:
-	def __init__(self, dictionary):
+	def __init__(self, name, dictionary):
+		self.class_name = name
 		for k, v in dictionary.items():
 			setattr(self, k, v)
 

@@ -2,6 +2,7 @@ import sys
 import requests
 import re
 import os
+import shutil
 from getpass import getpass
 from lxml.html import fromstring, HtmlElement
 from lxml.cssselect import CSSSelector as css
@@ -10,8 +11,8 @@ from lxml import etree
 sys.path.append('../')
 from utils import *
 from bs4 import BeautifulSoup
-from classes.course import *
-from classes.student import *
+from classes.model import model
+from classes.picture import picture
 # this class defines all the variables and methods that the faculty class should implement
 notImplementedWarning = "\nMethod not implemented for %s module\n"
 
@@ -21,8 +22,9 @@ notImplementedWarning = "\nMethod not implemented for %s module\n"
 
 # given a class name and a dict of attribute->value, create a new class (child of model) all the possibilities must be imported (TODO: use __init__.py)
 def get_class_from_dict(class_name, dictionary):
-    klass = globals()[class_name]
-    return klass(dictionary)
+    # klass = globals()[class_name]
+    # return klass(dictionary)
+    return model(class_name, dictionary)
 
 
 # given an lxml tree and a config dict with a "regex" key, get its value
@@ -151,7 +153,9 @@ class interface:
         return get_class_from_dict(class_name, parse_attributes(tree, conf["attributes"]))
 
     def getStudent(self, id):
-        return self.getClass("student", (id))
+        student = self.getClass("student", (id))
+        student.id = id
+        return student
 
     def setLoad(self, name, value):
         self.__dict__[name] = value
@@ -185,13 +189,6 @@ class interface:
     def findSubject(self, id):  # creates a subject instance from the subject id
         print(self)
 
-    def getPicture(self, id="", path="", display=False, save=True):  # reads the picture from the web and returns it, if it exists
-        print(self)
-
-    """def evalSession(self, functionName):#checks if a valid session exists
-        if self.session == requests:
-            print("\nERROR - The % function requires a user session\n call startSession(username, password) for this purpose" % functionName)"""
-
     def __str__(self):
         return notImplementedWarning % self.name
 
@@ -199,3 +196,11 @@ class interface:
         if self.session == requests:
             return False
         return True
+
+    # reads the picture from the web and returns it, if it exists
+    def get_picture(self, id):
+        r = self.session.get(interface.routes["pictures"] % str(id), stream=True)
+        path = "%s%s.jpg" % (interface.configs["pictures_folder"], id)
+        if r.status_code == 200:
+            return picture(os.path.abspath(path), r.raw)
+        return False

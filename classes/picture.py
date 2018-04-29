@@ -1,25 +1,21 @@
-import sys, os
-sys.path.append('../')
-from utils import constructString
+import sys
+import os
 from PIL import Image
+
+
 class picture:
-    def __init__(self, path=""):
+    def __init__(self, path, raw):
+        self.img = Image.open(raw)
         self.path = path
 
-    def exists(self):
-        return os.path.isfile(self.path)
-
     def show(self):
-        exists = self.exists()
-        if exists:
-            img = Image.open(self.path)
-            img.show()
-        else:
-            print("Unable to show image (%s) - file deleted" % self.path)
-        return exists
+        self.img.show()
+        return self
+
+    def save(self):
+        self.img.save(self.path)
+        return self
 
     def delete(self):
         os.unlink(self.path)
-    def __str__(self):
-        return constructString(self)
-        
+        return self
