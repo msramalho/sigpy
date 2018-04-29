@@ -19,7 +19,7 @@ def get_class_from_dict(class_name, dictionary):
 # given an lxml tree and a config dict with a "regex" key, get its value
 def parse_regex(tree, config):
     index = config["index"] if "index" in config else 1
-    res = re.search(config["regex"], etree.tostring(tree).decode("utf-8"))
+    res = re.search(config["regex"], etree.tostring(tree,encoding='utf-8').decode("utf-8"))
     if res:
         return res.group(index)
     return None
