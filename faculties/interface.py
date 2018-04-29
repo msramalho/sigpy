@@ -7,87 +7,14 @@ from getpass import getpass
 from lxml.html import fromstring, HtmlElement
 from lxml.cssselect import CSSSelector as css
 from lxml import etree
+from bs4 import BeautifulSoup
 
 sys.path.append('../')
-from utils import *
-from bs4 import BeautifulSoup
 from classes.model import model
 from classes.picture import picture
+from faculties.parser import parse_attributes, get_class_from_dict
 # this class defines all the variables and methods that the faculty class should implement
 notImplementedWarning = "\nMethod not implemented for %s module\n"
-
-
-# ROUTE PARSING FUCTIONS
-
-
-# given a class name and a dict of attribute->value, create a new class (child of model) all the possibilities must be imported (TODO: use __init__.py)
-def get_class_from_dict(class_name, dictionary):
-    # klass = globals()[class_name]
-    # return klass(dictionary)
-    return model(class_name, dictionary)
-
-
-# given an lxml tree and a config dict with a "regex" key, get its value
-def parse_regex(tree, config):
-    index = config["index"] if "index" in config else 1
-    res = re.search(config["regex"], etree.tostring(tree).decode("utf-8"))
-    if res:
-        return res.group(index)
-    return None
-
-
-# given an lxml tree and a config dict with a "css" key, get its value
-def parse_css(tree, config):
-    index = config["index"] if "index" in config else 0
-    return tree.cssselect(config["css"])[index].text_content().strip()
-
-
-# given an lxml tree and a config dict with a "xpath" key, get its value
-def parse_xpath(tree, config):
-    index = config["index"] if "index" in config else 0
-    el = tree.xpath(config["xpath"])[index]
-    if isinstance(el, HtmlElement):
-        el = el.text_content()
-    return el.strip()
-
-
-# given an lxml tree and a config dict with one of [css, regex, xpath] key, get its value
-def parse_attribute(tree, config):
-    if "css" in config:  # this is an attribute from css
-        return parse_css(tree, config)
-    elif "regex" in config:  # this is an attribute from regex
-        return parse_regex(tree, config)
-    elif "xpath" in config:
-        return parse_xpath(tree, config)
-
-
-# given an lxml tree and a config dict with one of [css, xpath] key, get its lxml element
-def parse_element(tree, config):
-    if "css" in config:  # this is an attribute from css
-        return tree.cssselect(config["css"])
-    elif "xpath" in config:
-        return tree.xpath(config)
-
-
-# given an lxml element and a config, parse a class's attributes and create a new class from them
-def parse_class(element, config):
-    d = parse_attributes(element, config["attributes"])
-    return get_class_from_dict(config["class"], d)
-
-
-# primary function that receives a tree and recursively finds its values, returning accordingly
-def parse_attributes(tree, attributes):
-    res = {}
-    for attr, config in attributes.items():
-        if "class" not in config:  # this is a simple attr with direct css
-            res[attr] = parse_attribute(tree, config)
-        elif "class" in config:  # handle classes
-            element = parse_element(tree, config)
-            if "list" in config:  # handle list of said class
-                res[attr] = [parse_class(e, config) for e in element]
-            else:  # handle single element of that class
-                res[attr] = parse_class(element, config)
-    return res
 
 
 class interface:
@@ -157,9 +84,15 @@ class interface:
         student.id = id
         return student
 
-    def setLoad(self, name, value):
-        self.__dict__[name] = value
+    # reads the picture from the web and returns it, if it exists
+    def get_picture(self, id):
+        r = self.session.get(interface.routes["picture"] % str(id), stream=True)
+        path = "%s%s.jpg" % (interface.configs["pictures_folder"], id)
+        if r.status_code == 200:
+            return picture(os.path.abspath(path), r.raw)
+        return False
 
+    # log a user in, either receive or prompt for password, tests using configs["auth_failed"]
     def login(self, username, password=None):  # creates a requests session to access protected pages
         if password is None:
             password = getpass("Password for %s?\n" % username)
@@ -171,18 +104,6 @@ class interface:
             return False
         return True
 
-    def __str__(self):
-        return notImplementedWarning % self.name
-
-    def checkSession(self):  # checks if a valid session exists and exits if not
-        if self.session == requests:
-            return False
-        return True
-
-    # reads the picture from the web and returns it, if it exists
-    def get_picture(self, id):
-        r = self.session.get(interface.routes["picture"] % str(id), stream=True)
-        path = "%s%s.jpg" % (interface.configs["pictures_folder"], id)
-        if r.status_code == 200:
-            return picture(os.path.abspath(path), r.raw)
-        return False
+    # checks if a valid session exists and exits if not
+    def logged_in(self):
+        return self.session != requests
