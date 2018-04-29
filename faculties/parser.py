@@ -61,16 +61,16 @@ def parse_element(tree, config):
 # given an lxml element and a config, parse a class's attributes and create a new class from them
 def parse_class(element, config):
     d = parse_attributes(element, config["attributes"])
-    return get_class_from_dict(config["class"], d)
+    return get_class_from_dict(config["model"], d)
 
 
 # primary function that receives a tree and recursively finds its values, returning accordingly
 def parse_attributes(tree, attributes):
     res = {}
     for attr, config in attributes.items():
-        if "class" not in config:  # this is a simple attr with direct css
+        if "model" not in config:  # this is a simple attr with direct css
             res[attr] = parse_attribute(tree, config)
-        elif "class" in config:  # handle classes
+        elif "model" in config:  # handle classes
             element = parse_element(tree, config)
             if "list" in config:  # handle list of said class
                 res[attr] = [parse_class(e, config) for e in element]

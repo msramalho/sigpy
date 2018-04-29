@@ -42,7 +42,7 @@ class interface:
             "attributes": {
                 "name": {"css": "div.estudante-info-nome"},  # if not class in attribute
                 "courses": {
-                    "class": "course",
+                    "model": "course", # model works as class
                     "list": True,  # omission means single
                     "css": "div.estudante-lista-curso-activo",
                     "attributes": {
@@ -54,7 +54,7 @@ class interface:
                     }
                 },
                 "inactive_courses": {
-                    "class": "course",
+                    "model": "course",
                     "list": True,  # omission means single
                     "css": "div.tabela-longa",
                     "attributes": {
