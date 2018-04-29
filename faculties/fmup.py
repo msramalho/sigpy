@@ -1,34 +1,19 @@
 import sys, shutil
 sys.path.append('../')
 from faculties.interface import *
-from classes.student import *
-from classes.teacher import *
-from classes.picture import *
 class faculty(interface):
     name = "fmup"
 
+    interface.routes["base"] = "https://sigarra.up.pt/fmup/pt/"
+    interface.routes["index"] = "https://sigarra.up.pt/fmup/pt/web_page.Inicial"
+    interface.routes["student"] = "https://sigarra.up.pt/fmup/pt/fest_geral.cursos_list?pv_num_unico=%s"
+    interface.routes["teacher"] = "https://sigarra.up.pt/fmup/pt/func_geral.formview?p_codigo=%s"
+    interface.routes["teacher_schedule"] = "https://sigarra.up.pt/fmup/pt/hor_geral.docentes_view?pv_doc_codigo=%s"
+    interface.routes["course"] = "https://sigarra.up.pt/fmup/pt/cur_geral.cur_view?pv_curso_id=%s&pv_ano_lectivo=%d"
+    interface.routes["picture"] = "https://sigarra.up.pt/fmup/pt/fotografias_service.foto?pct_cod=%s"
+
     def __init__(self):
         super(faculty, self).__init__()
-        self.base = "https://sigarra.up.pt/fmup/pt/"
-        self.index = "https://sigarra.up.pt/fmup/pt/web_page.Inicial"
-        self.students = "https://sigarra.up.pt/fmup/pt/fest_geral.cursos_list?pv_num_unico=%s"
-        self.teachers = "https://sigarra.up.pt/fmup/pt/func_geral.formview?p_codigo=%s"
-        self.teachersSchedule = "https://sigarra.up.pt/fmup/pt/hor_geral.docentes_view?pv_doc_codigo=%s"
-        self.courses = "https://sigarra.up.pt/fmup/pt/cur_geral.cur_view?pv_curso_id=%s&pv_ano_lectivo=%d"
-        self.pictures = "https://sigarra.up.pt/fmup/pt/fotografias_service.foto?pct_cod=%s"
-        self.picturesFolder = "./images/"
-
-    def __str__(self):
-        return "THIS IS fmup"
-
-    def startSession(self, username, password):#(done) creates a requests session to access protected pages
-        self.session = requests.Session()
-        payload = {'p_user': username, 'p_pass': password}
-        r = self.session.post('https://sigarra.up.pt/fmup/pt/vld_validacao.validacao', params=payload)
-        if re.search("O conjunto utilizador/senha não é válido.", r.text):
-            self.session = requests
-            return False
-        return True
 
     def completeCourse(self, c, nameHtml):#(done) avoid duplicate code
         p = re.compile(".*pv_curso_id=(\d+).*")

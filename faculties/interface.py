@@ -96,10 +96,10 @@ class interface:
         "orcid": "http://orcid.org/%s",
         "base": False,
         "index": False,
-        "pictures": False,
-        "courses": False,
-        "students": False,
-        "teachers": False,
+        "picture": False,
+        "course": False,
+        "student": False,
+        "teacher": False,
         "base": False,
         "auth": "https://sigarra.up.pt/feup/pt/vld_validacao.validacao"
     }
@@ -146,21 +146,21 @@ class interface:
     def __init__(self):  # defaultLoads is the value for the self.loadXXXX variables
         self.session = requests
 
-    def getClass(self, class_name, route_tuple):
+    def get_class(self, class_name, route_tuple):
         conf = interface.classes[class_name]
         req = self.session.get(interface.routes[conf["url"]] % route_tuple)
         tree = fromstring(req.text)
         return get_class_from_dict(class_name, parse_attributes(tree, conf["attributes"]))
 
-    def getStudent(self, id):
-        student = self.getClass("student", (id))
+    def get_student(self, id):
+        student = self.get_class("student", (id))
         student.id = id
         return student
 
     def setLoad(self, name, value):
         self.__dict__[name] = value
 
-    def startSession(self, username, password=None):  # creates a requests session to access protected pages
+    def login(self, username, password=None):  # creates a requests session to access protected pages
         if password is None:
             password = getpass("Password for %s?\n" % username)
         self.session = requests.Session()
@@ -170,24 +170,6 @@ class interface:
             self.session = requests
             return False
         return True
-
-    def findStudent(self, id):  # sends get request for the student id and parses his/her information
-        print(self)
-
-    def findTeacher(self, id):  # sends get request for the teacher id and parses his/her information
-        print(self)
-
-    def findCourse(self, id):  # creates a course instance from the course id
-        print(self)
-
-    def findRoom(self, id):  # creates a room instance from the room id
-        print(self)
-
-    def findSubjects(self, id):  # creates a subject instance from the subject id
-        print(self)
-
-    def findSubject(self, id):  # creates a subject instance from the subject id
-        print(self)
 
     def __str__(self):
         return notImplementedWarning % self.name
@@ -199,7 +181,7 @@ class interface:
 
     # reads the picture from the web and returns it, if it exists
     def get_picture(self, id):
-        r = self.session.get(interface.routes["pictures"] % str(id), stream=True)
+        r = self.session.get(interface.routes["picture"] % str(id), stream=True)
         path = "%s%s.jpg" % (interface.configs["pictures_folder"], id)
         if r.status_code == 200:
             return picture(os.path.abspath(path), r.raw)
