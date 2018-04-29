@@ -66,7 +66,10 @@ class interface:
             }
         },
         "course": {
-            "url": "course"
+            "url": "course",
+            "attributes":{
+                name: {"regex": "<title>FEUP - (.+)<\/title>"}
+            }
         }
     }
 
@@ -83,6 +86,11 @@ class interface:
         student = self.get_class("student", (id))
         student.id = id
         return student
+
+    def get_course(self, id):
+        course = self.get_class("course", (id))
+        course.id = id
+        return course
 
     # reads the picture from the web and returns it, if it exists
     def get_picture(self, id):
