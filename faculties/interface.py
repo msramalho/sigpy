@@ -15,19 +15,17 @@ from classes.student import *
 # this class defines all the variables and methods that the faculty class should implement
 notImplementedWarning = "\nMethod not implemented for %s module\n"
 
+
 # ROUTE PARSING FUCTIONS
 
-# given a class name and a dict of attribute->value, create a new class (child of model)
-# all the possibilities must be imported (TODO: use __init__.py)
 
-
+# given a class name and a dict of attribute->value, create a new class (child of model) all the possibilities must be imported (TODO: use __init__.py)
 def get_class_from_dict(class_name, dictionary):
     klass = globals()[class_name]
     return klass(dictionary)
 
+
 # given an lxml tree and a config dict with a "regex" key, get its value
-
-
 def parse_regex(tree, config):
     index = config["index"] if "index" in config else 1
     res = re.search(config["regex"], etree.tostring(tree).decode("utf-8"))
@@ -61,11 +59,10 @@ def parse_attribute(tree, config):
         return parse_xpath(tree, config)
 
 
+# given an lxml tree and a config dict with one of [css, xpath] key, get its lxml element
 def parse_element(tree, config):
     if "css" in config:  # this is an attribute from css
         return tree.cssselect(config["css"])
-    # elif "regex" in config:  # this is an attribute from regex I DO NOT THINK THIS IS POSSIBLE
-        # return parse_regex(tree, config)
     elif "xpath" in config:
         return tree.xpath(config)
 
@@ -76,6 +73,7 @@ def parse_class(element, config):
     return get_class_from_dict(config["class"], d)
 
 
+# primary function that receives a tree and recursively finds its values, returning accordingly
 def parse_attributes(tree, attributes):
     res = {}
     for attr, config in attributes.items():
