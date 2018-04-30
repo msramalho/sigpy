@@ -36,8 +36,6 @@ def parse_css(tree, config):
 
 # given an lxml tree and a config dict with a "xpath" key, get its VALUE
 def parse_xpath(tree, config):
-    print(tree)
-    print(config)
     el = tree.xpath(config["xpath"])[get_index(config)]
     if isinstance(el, HtmlElement):
         el = el.text_content()
