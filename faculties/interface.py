@@ -80,7 +80,7 @@ class interface:
                 },
                 "assistant_director": {
                     "model": "teacher",
-                    "xpath": ".//table[@class='formulario']/tr[td[text()[contains(., 'Diretor Adjuntos:')]]]",
+                    "xpath": ".//table[@class='formulario']/tr[td[text()[contains(., 'Diretor Adjunto:')]]]",
                     "attributes": {
                         "name": {"xpath": ".//td[2]"},
                         "id": {"regex": "pct_codigo=(.+?)\""}
