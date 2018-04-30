@@ -42,7 +42,7 @@ class interface:
             "attributes": {
                 "name": {"css": "div.estudante-info-nome"},  # if not class in attribute
                 "courses": {
-                    "model": "course", # model works as class
+                    "model": "course",  # model works as class
                     "list": True,  # omission means single
                     "css": "div.estudante-lista-curso-activo",
                     "attributes": {
@@ -67,8 +67,25 @@ class interface:
         },
         "course": {
             "url": "course",
-            "attributes":{
-                name: {"regex": "<title>FEUP - (.+)<\/title>"}
+            "attributes": {
+                "name": {"regex": "<title>FEUP - (.+)<\/title>"},
+                "cod": {"xpath": ".//table[@class='formulario']/tr/td//text()[contains(., 'Código Oficial')]/following::td[1]"},
+                "director": {
+                    "model": "teacher",
+                    "xpath": ".//table[@class='formulario']/tr[td[text()[contains(., 'Diretor:')]]]",
+                    "attributes": {
+                        "name": {"xpath": ".//td[2]"},
+                        "id": {"regex": "pct_codigo=(.+?)\""}
+                    }
+                },
+                "assistant_director": {
+                    "model": "teacher",
+                    "xpath": ".//table[@class='formulario']/tr[td[text()[contains(., 'Diretor Adjuntos:')]]]",
+                    "attributes": {
+                        "name": {"xpath": ".//td[2]"},
+                        "id": {"regex": "pct_codigo=(.+?)\""}
+                    }
+                }
             }
         }
     }
@@ -76,19 +93,19 @@ class interface:
     def __init__(self):  # defaultLoads is the value for the self.loadXXXX variables
         self.session = requests
 
-    def get_class(self, class_name, route_tuple):
+    def get_class(self, class_name, route_tuple, original=None):
         conf = interface.classes[class_name]
         req = self.session.get(interface.routes[conf["url"]] % route_tuple)
         tree = fromstring(req.text)
-        return get_class_from_dict(class_name, parse_attributes(tree, conf["attributes"]))
+        return get_class_from_dict(class_name, parse_attributes(tree, conf["attributes"], original))
 
-    def get_student(self, id):
-        student = self.get_class("student", (id))
+    def get_student(self, id, original=None):
+        student = self.get_class("student", (id), original)
         student.id = id
         return student
 
-    def get_course(self, id):
-        course = self.get_class("course", (id))
+    def get_course(self, id, original=None):
+        course = self.get_class("course", (id), original)
         course.id = id
         return course
 
