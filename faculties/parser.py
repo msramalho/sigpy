@@ -16,31 +16,35 @@ def get_class_from_dict(class_name, dictionary):
     return model(class_name, dictionary)
 
 
-# given an lxml tree and a config dict with a "regex" key, get its value
+# given a config and a default value for index, either return the one in config or the default
+def get_index(config, default=0):
+    return config["index"] if "index" in config else default
+
+
+# given an lxml tree and a config dict with a "regex" key, get its VALUE
 def parse_regex(tree, config):
-    index = config["index"] if "index" in config else 1
-    res = re.search(config["regex"], etree.tostring(tree,encoding='utf-8').decode("utf-8"))
+    res = re.search(config["regex"], etree.tostring(tree, encoding='utf-8').decode("utf-8"))
     if res:
-        return res.group(index)
+        return res.group(get_index(config, 1))
     return None
 
 
-# given an lxml tree and a config dict with a "css" key, get its value
+# given an lxml tree and a config dict with a "css" key, get its VALUE
 def parse_css(tree, config):
-    index = config["index"] if "index" in config else 0
-    return tree.cssselect(config["css"])[index].text_content().strip()
+    return tree.cssselect(config["css"])[get_index(config)].text_content().strip()
 
 
-# given an lxml tree and a config dict with a "xpath" key, get its value
+# given an lxml tree and a config dict with a "xpath" key, get its VALUE
 def parse_xpath(tree, config):
-    index = config["index"] if "index" in config else 0
-    el = tree.xpath(config["xpath"])[index]
+    print(tree)
+    print(config)
+    el = tree.xpath(config["xpath"])[get_index(config)]
     if isinstance(el, HtmlElement):
         el = el.text_content()
     return el.strip()
 
 
-# given an lxml tree and a config dict with one of [css, regex, xpath] key, get its value
+# given an lxml tree and a config dict with one of [css, regex, xpath] key, get its VALUE
 def parse_attribute(tree, config):
     if "css" in config:  # this is an attribute from css
         return parse_css(tree, config)
@@ -50,12 +54,12 @@ def parse_attribute(tree, config):
         return parse_xpath(tree, config)
 
 
-# given an lxml tree and a config dict with one of [css, xpath] key, get its lxml element
+# given an lxml tree and a config dict with one of [css, xpath] key, get its lxml ELEMENT
 def parse_element(tree, config):
     if "css" in config:  # this is an attribute from css
         return tree.cssselect(config["css"])
     elif "xpath" in config:
-        return tree.xpath(config)
+        return tree.xpath(config["xpath"])[get_index(config)]
 
 
 # given an lxml element and a config, parse a class's attributes and create a new class from them
@@ -65,9 +69,14 @@ def parse_class(element, config):
 
 
 # primary function that receives a tree and recursively finds its values, returning accordingly
-def parse_attributes(tree, attributes):
+def parse_attributes(tree, attributes, original=None):
     res = {}
     for attr, config in attributes.items():
+         # if the original already has the attribute defined then simple load it
+        if original and attr in original.__dict__:
+            res[attr] = original.__dict__[attr]
+            continue
+        # else load from the configurations
         if "model" not in config:  # this is a simple attr with direct css
             res[attr] = parse_attribute(tree, config)
         elif "model" in config:  # handle classes
