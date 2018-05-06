@@ -13,19 +13,24 @@ p = "TODO"
 print("Login: %s" % fac.login("up201403027", p))
 
 # get a student
+# me = fac.get_student("201303462") # mota
 me = fac.get_student("201403027")
 print(me)
 
 # fac.get_course(me.courses, filter=lambda c: c.id != null)
 mieic = fac.get_course(me.courses[1].id)
-print(mieic)
+# print(mieic)
 
-mieic = fac.get_course(me.courses[1].id, me.courses[1])
-print(mieic)
+# mieic = fac.get_course(me.courses[1].id, me.courses[1])
+# print(mieic)
 
 # miem = fac.get_course(743)
 # print(miem)
 
 
 # get a student picture and display it
-fac.get_picture(mieic.director.id).show()
+# fac.get_picture(mieic.director.id).show()
+
+# get a teacher
+pascoal = fac.get_teacher(mieic.director.id)
+print(pascoal)
