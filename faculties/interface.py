@@ -41,12 +41,15 @@ class interface:
             "url": "student",
             "attributes": {
                 "name": {"css": "div.estudante-info-nome"},  # if not class in attribute
+                "id": {"css": "div.estudante-info-numero a"},
+                "email": {"derivate": "up%s@fe.up.pt", "from": ["id"]},  # derivate from tuple #TODO: some students hay have different emails
                 "courses": {
                     "model": "course",  # model works as class
                     "list": True,  # omission means single
                     "css": "div.estudante-lista-curso-activo",
                     "attributes": {
                         "name": {"css": "div.estudante-lista-curso-nome"},
+                        "institution": {"css": "div.estudante-lista-curso-instit"},
                         "id": {"regex": ".*pv_curso_id=(\d+).*"},  # if there is an anchor
                         "enrolled": {"xpath": ".//td[text()='Ano da primeira inscrição:']/following::td[1]"},
                         "year": {"xpath": ".//td[text()='Ano curricular atual:']/following::td[1]"},
@@ -60,7 +63,10 @@ class interface:
                     "attributes": {
                         "name": {"css": "td.t.k"},
                         "id": {"regex": ".*pv_curso_id=(\d+).*"},  # if there is an anchor
-                        "institution": {"xpath": ".//tr[@class='i']/td[2]/a/@title"}
+                        "institution": {"xpath": ".//tr[@class='i']/td[2]/a/@title"},
+                        "old_id": {"css": "td.l"},
+                        "type": {"css": "td.t", "index": 2},
+                        "started": {"css": "td.l", "index": 1}
                     }
                 }
             }
@@ -87,6 +93,40 @@ class interface:
                     }
                 }
             }
+        },
+        "teacher": {
+            "url": "teacher",
+            "attributes": {
+                "name": {"regex": "<title>FEUP - (.*?)</title>"},
+                "initials": {"xpath": ".//td[text()='Sigla:']/following::td[1]"},
+                "state": {"xpath": ".//td[text()='Estado:']/following::td[1]"},
+                "orcid": {"regex": "href=\"http://orcid.org/(.*?)\""},
+                "alias": {"regex": ":(.*)'\+secure\+'fe\.up\.pt'"},
+                "email": {"derivate": "%s@fe.up.pt", "from": ["alias"]},
+                "phone": {"xpath": "(.//td[text()='Telefone:'])[2]/following::td[1]"},
+                "voip": {"xpath": ".//td[text()='Voip:']/following::td[1]"},
+                "category": {"xpath": ".//div[contains(@class, 'informacao-pessoal-funcoes')]//td[text()='Categoria:']/following::td[1]"},
+                "presentation": {"css": "div.informacao-pessoal-apresentacao span"},
+                "rooms": {
+                    "model": "room",
+                    "list": True,
+                    "xpath": ".//td[text()='Salas: ']/following::td[1]",
+                    "attributes": {
+                        "name": {"css": "a.normal"},
+                        "id": {"regex": "pv_id=(.*?)\""}
+                    }
+                },
+                "positions": {
+                    "model": "position",  # TODO: remove and make work
+                    "list": True,
+                    "css": "tr.k.d",
+                    "attributes": {
+                        "name": {"css": "td.k"},
+                        "date": {"css": "td.l"},
+                        "id": {"regex": "href=\".*=(.*?)\""}
+                    }
+                }
+            }
         }
     }
 
@@ -100,14 +140,25 @@ class interface:
         return get_class_from_dict(class_name, parse_attributes(tree, conf["attributes"], original))
 
     def get_student(self, id, original=None):
-        student = self.get_class("student", (id), original)
+        student = self.get_class("student", (interface.get_id(id)), original)
         student.id = id
         return student
 
     def get_course(self, id, original=None):
-        course = self.get_class("course", (id), original)
+        course = self.get_class("course", (interface.get_id(id)), original)
         course.id = id
         return course
+
+    def get_teacher(self, id, original=None):
+        teacher = self.get_class("teacher", (interface.get_id(id)), original)
+        teacher.id = id
+        return teacher
+
+    # static method that receives an id and returns the numeric part
+    def get_id(id):
+        if isinstance(id, str) and "up" in id:
+            return id[2:]
+        return id
 
     # reads the picture from the web and returns it, if it exists
     def get_picture(self, id):
