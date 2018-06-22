@@ -6,9 +6,9 @@ import re
 
 sys.path.append('../')
 from classes.model import model
+
+
 # ROUTE PARSING FUCTIONS
-
-
 # given a class name and a dict of attribute->value, create a new class (child of model) all the possibilities must be imported (TODO: use __init__.py)
 def get_class_from_dict(class_name, dictionary):
     # klass = globals()[class_name]
@@ -41,9 +41,11 @@ def parse_xpath(tree, config):
         el = el.text_content()
     return el.strip()
 
+
 # given a config dict with string "derivate" and tuple "from", match both and return
 def parse_derivate(config, res):
     return config["derivate"] % tuple(res[t_el] for t_el in config["from"])
+
 
 # given an lxml tree and a config dict with one of [css, regex, xpath] key, get its VALUE
 def parse_attribute(tree, config, res):
@@ -54,9 +56,9 @@ def parse_attribute(tree, config, res):
             return parse_regex(tree, config)
         elif "xpath" in config:  # this is an attirbute from xpath
             return parse_xpath(tree, config)
-        elif "derivate" in config: # this is an attribute derivated from another
+        elif "derivate" in config:  # this is an attribute derivated from another
             return parse_derivate(config, res)
-    except Exception as e: # some attributes do not exist if not logged in
+    except Exception as e:  # some attributes do not exist if not logged in
         print("Error: %s when parsing %s... Ignoring attribute" % (str(e), config))
         return None
 
@@ -68,7 +70,7 @@ def parse_element(tree, config):
             return tree.cssselect(config["css"])
         elif "xpath" in config:
             return tree.xpath(config["xpath"])[get_index(config)]
-    except Exception as e: # some attributes do not exist if not logged in
+    except Exception as e:  # some attributes do not exist if not logged in
         print("Error: %s when parsing %s... Ignoring element" % (str(e), config))
         return []
 
