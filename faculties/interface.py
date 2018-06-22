@@ -137,9 +137,10 @@ class interface:
             "picture": "room_picture",  # route name for getting pictures
             "attributes": {
                 "id": {"regex": "href=\".*pv_id=(.*?)\""},
-                "picture_id": {"regex": "Mapa.*?src=\".*get_mapa\?pv_id=(.*?)\""}, # overrides id
+                "picture_id": {"regex": "Mapa.*?src=\".*get_mapa\?pv_id=(.*?)\""},  # overrides id
                 "name": {"regex": "<h1>(.+)</h1>"},
                 "building": {"xpath": ".//div[text()='Edifício:']/following::div[contains(@class, 'form-campo')]"},
+                "floor": {"xpath": ".//select[@id='pisos']/option[@selected='selected'][2]"},
                 "purpose": {"xpath": ".//div[text()='Utilização:']/following::div[contains(@class, 'form-campo')]"},
                 "area": {"xpath": ".//div[contains(text(), 'Área')]/following::div[contains(@class, 'form-campo')]"},
                 "phone": {"xpath": ".//div[text()='Telefone:']/following::div[contains(@class, 'form-campo')]"},
