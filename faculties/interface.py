@@ -28,6 +28,7 @@ class interface:
         "student": False,
         "teacher": False,
         "base": False,
+        "room": False,
         "auth": "https://sigarra.up.pt/feup/pt/vld_validacao.validacao"
     }
 
@@ -127,6 +128,33 @@ class interface:
                     }
                 }
             }
+        },
+        "room": {
+            "url": "room",
+            "attributes": {
+                "building": {"xpath": ".//div[text()='Edifício:']/following::div[contains(@class, 'form-campo')]"},
+                "purpose": {"xpath": ".//div[text()='Utilização:']/following::div[contains(@class, 'form-campo')]"},
+                "area": {"xpath": ".//div[contains(text(), 'Área')]/following::div[contains(@class, 'form-campo')]"},
+                "phone": {"xpath": ".//div[text()='Telefone:']/following::div[contains(@class, 'form-campo')]"},
+                "managers": {
+                    "model": "teacher",  # may not be teacher, but rather superclass employee
+                    "list": True,
+                    "xpath": ".//div[text()='Responsáveis:']/following::div[contains(@class, 'form-campo')]/ul",
+                    "attributes": {
+                        "name": {"css": "li a"},
+                        "id": {"regex": "href=\".*p_codigo=(.*?)\""}
+                    }
+                },
+                "occupants": {
+                    "model": "teacher",  # may not be teacher, but rather superclass employee
+                    "list": True,
+                    "xpath": ".//div[text()='Ocupante:']/following::div[contains(@class, 'form-campo')]/ul",
+                    "attributes": {
+                        "name": {"css": "li a"},
+                        "id": {"regex": "href=\".*p_codigo=(.*?)\""}
+                    }
+                }
+            }
         }
     }
 
@@ -153,6 +181,11 @@ class interface:
         teacher = self.get_class("teacher", (interface.get_id(id)), original)
         teacher.id = id
         return teacher
+
+    def get_room(self, id, original=None):
+        room = self.get_class("room", interface.get_id(id), original)
+        room.id = id
+        return room
 
     # static method that receives an id and returns the numeric part
     def get_id(id):
