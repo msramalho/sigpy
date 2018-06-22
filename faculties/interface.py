@@ -24,6 +24,7 @@ class interface:
         "base": False,
         "index": False,
         "picture": False,
+        "room_picture": False,
         "course": False,
         "student": False,
         "teacher": False,
@@ -40,6 +41,7 @@ class interface:
     classes = {
         "student": {
             "url": "student",
+            "picture": "picture",  # route name for getting pictures
             "attributes": {
                 "name": {"css": "div.estudante-info-nome"},  # if not class in attribute
                 "id": {"css": "div.estudante-info-numero a"},
@@ -97,6 +99,7 @@ class interface:
         },
         "teacher": {
             "url": "teacher",
+            "picture": "picture",
             "attributes": {
                 "name": {"regex": "<title>FEUP - (.*?)</title>"},
                 "initials": {"xpath": ".//td[text()='Sigla:']/following::td[1]"},
@@ -118,7 +121,7 @@ class interface:
                     }
                 },
                 "positions": {
-                    "model": "position",  # TODO: remove and make work
+                    "model": "position",
                     "list": True,
                     "css": "tr.k.d",
                     "attributes": {
@@ -131,7 +134,11 @@ class interface:
         },
         "room": {
             "url": "room",
+            "picture": "room_picture",  # route name for getting pictures
             "attributes": {
+                "id": {"regex": "href=\".*pv_id=(.*?)\""},
+                "picture_id": {"regex": "Mapa.*?src=\".*get_mapa\?pv_id=(.*?)\""}, # overrides id
+                "name": {"regex": "<h1>(.+)</h1>"},
                 "building": {"xpath": ".//div[text()='Edifício:']/following::div[contains(@class, 'form-campo')]"},
                 "purpose": {"xpath": ".//div[text()='Utilização:']/following::div[contains(@class, 'form-campo')]"},
                 "area": {"xpath": ".//div[contains(text(), 'Área')]/following::div[contains(@class, 'form-campo')]"},
@@ -151,7 +158,7 @@ class interface:
                     "xpath": ".//div[text()='Ocupante:']/following::div[contains(@class, 'form-campo')]/ul",
                     "attributes": {
                         "name": {"css": "li a"},
-                        "id": {"regex": "href=\".*p_codigo=(.*?)\""}
+                        "id": {"regex": "href=\".*p_codigo=(.*?)\""},
                     }
                 }
             }
@@ -193,12 +200,16 @@ class interface:
             return id[2:]
         return id
 
-    # reads the picture from the web and returns it, if it exists
-    def get_picture(self, id):
-        r = self.session.get(interface.routes["picture"] % str(id), stream=True)
-        path = "%s%s.jpg" % (interface.configs["pictures_folder"], id)
-        if r.status_code == 200:
-            return picture(os.path.abspath(path), r.raw)
+    # reads a picture from the web and returns it, if it exists, m is a model instance
+    def get_picture(self, m):
+        if "picture" in interface.classes[m.class_name]:  # this instance has picture
+            route_name = interface.classes[m.class_name]["picture"]
+            pid = getattr(m, "picture_id", m.id)
+            r = self.session.get(interface.routes[route_name] % str(pid), stream=True)
+            path = "%s%s.jpg" % (interface.configs["pictures_folder"], pid)
+            print(path)
+            if r.status_code == 200:
+                return picture(os.path.abspath(path), r.raw)
         return False
 
     # log a user in, either receive or prompt for password, tests using configs["auth_failed"]

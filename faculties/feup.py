@@ -15,6 +15,7 @@ class faculty(interface):
     interface.routes["course"] = "https://sigarra.up.pt/feup/pt/cur_geral.cur_view?pv_curso_id=%s&pv_ano_lectivo=%d" % ("%s", getSchoolYear())
     interface.routes["picture"] = "https://sigarra.up.pt/feup/pt/fotografias_service.foto?pct_cod=%s"
     interface.routes["room"] = "https://sigarra.up.pt/feup/pt/instal_geral.espaco_view?pv_id=%s"
+    interface.routes["room_picture"] = "https://sigarra.up.pt/feup/pt/instal_geral2.get_mapa?pv_id=%s"
 
     def __init__(self):
         super(faculty, self).__init__()
