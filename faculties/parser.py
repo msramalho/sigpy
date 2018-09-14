@@ -59,7 +59,7 @@ def parse_attribute(tree, config, res):
         elif "derivate" in config:  # this is an attribute derivated from another
             return parse_derivate(config, res)
     except Exception as e:  # some attributes do not exist if not logged in
-        print("Error: %s when parsing %s... Ignoring attribute" % (str(e), config))
+        print("[-] Error: %s when parsing %s... Ignoring attribute" % (str(e), config))
         return None
 
 
@@ -71,7 +71,7 @@ def parse_element(tree, config):
         elif "xpath" in config:
             return tree.xpath(config["xpath"])[get_index(config)]
     except Exception as e:  # some attributes do not exist if not logged in
-        print("Error: %s when parsing %s... Ignoring element" % (str(e), config))
+        print("[-] Error: %s when parsing %s... Ignoring element" % (str(e), config))
         return []
 
 
