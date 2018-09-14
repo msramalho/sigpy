@@ -1,6 +1,4 @@
-import sys
-
-from sigpy.faculties.interface import interface
+from sigpy.interface import interface
 from sigpy.utils import getSchoolYear
 
 

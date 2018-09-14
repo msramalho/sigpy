@@ -1,7 +1,5 @@
-import sys
-sys.path.append('../')
 
-from faculties.interface import *
+from sigpy.interface import interface
 
 
 class faculty(interface):

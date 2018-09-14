@@ -13,11 +13,11 @@ from lxml import etree
 from bs4 import BeautifulSoup
 
 # sys.path.append('../../')
-from sigpy import *
-from sigpy.faculties.parser import *
+# from sigpy import *
+# from parser import *
 # from classes.model import model
 # from classes.picture import picture
-# from faculties.parser import parse_attributes, get_class_from_dict
+from sigpy.parser import parse_attributes, get_class_from_dict
 
 
 # this class defines all the variables and methods that the faculty class should implement

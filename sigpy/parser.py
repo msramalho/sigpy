@@ -4,7 +4,7 @@ from lxml.cssselect import CSSSelector as css
 from lxml import etree
 import re
 
-from .. classes.model import model
+from sigpy.classes.model import model
 
 
 # ROUTE PARSING FUCTIONS
