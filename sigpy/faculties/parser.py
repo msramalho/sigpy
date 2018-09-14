@@ -4,8 +4,7 @@ from lxml.cssselect import CSSSelector as css
 from lxml import etree
 import re
 
-sys.path.append('../')
-from classes.model import model
+from .. classes.model import model
 
 
 # ROUTE PARSING FUCTIONS
