@@ -16,7 +16,7 @@ from bs4 import BeautifulSoup
 # from sigpy import *
 # from parser import *
 # from classes.model import model
-# from classes.picture import picture
+from sigpy.classes.picture import picture
 from sigpy.parser import parse_attributes, get_class_from_dict
 
 
@@ -37,7 +37,7 @@ class interface:
     }
 
     configs = {
-        "pictures_folder": "./images/",
+        # "pictures_folder": "./images/",
         "auth_failed": "O conjunto utilizador/senha não é válido."
     }
 
@@ -54,7 +54,7 @@ class interface:
 
     # static method that receives an id and returns the numeric part
     def get_id(id):
-        if isinstance(id, str) and "up" in id:
+        if isinstance(id, str) and "up" in id.lower():
             return id[2:]
         return id
 
@@ -64,10 +64,10 @@ class interface:
             route_name = interface.classes[m.class_name]["picture"]
             pid = getattr(m, "picture_id", m.id)
             r = self.session.get(interface.routes[route_name] % str(pid), stream=True)
-            path = "%s%s.jpg" % (interface.configs["pictures_folder"], pid)
-            print(path)
+            # path = "%s.jpg" % pid
+            # print(path)
             if r.status_code == 200:
-                return picture(os.path.abspath(path), r.raw)
+                return picture("%s.jpg" % pid, r.raw)
         return False
 
     # log a user in, either receive or prompt for password, tests using configs["auth_failed"]
