@@ -1,0 +1,66 @@
+{
+    "url": "teacher",
+    "picture": "picture",
+    "attributes": {
+        "name": {
+            "regex": "<title>FEUP - (.*?)</title>"
+        },
+        "initials": {
+            "xpath": ".//td[text()='Sigla:']/following::td[1]"
+        },
+        "state": {
+            "xpath": ".//td[text()='Estado:']/following::td[1]"
+        },
+        "orcid": {
+            "regex": "href=\"http://orcid.org/(.*?)\""
+        },
+        "alias": {
+            "regex": ":(.*)'\\+secure\\+'fe\\.up\\.pt'"
+        },
+        "email": {
+            "derivate": "%s@fe.up.pt",
+            "from": ["alias"]
+        },
+        "phone": {
+            "xpath": "(.//td[text()='Telefone:'])[2]/following::td[1]"
+        },
+        "voip": {
+            "xpath": ".//td[text()='Voip:']/following::td[1]"
+        },
+        "category": {
+            "xpath": ".//div[contains(@class, 'informacao-pessoal-funcoes')]//td[text()='Categoria:']/following::td[1]"
+        },
+        "presentation": {
+            "css": "div.informacao-pessoal-apresentacao span"
+        },
+        "rooms": {
+            "model": "room",
+            "list": "True",
+            "xpath": ".//td[text()='Salas: ']/following::td[1]",
+            "attributes": {
+                "name": {
+                    "css": "a.normal"
+                },
+                "id": {
+                    "regex": "pv_id=(.*?)\""
+                }
+            }
+        },
+        "positions": {
+            "model": "position",
+            "list": "True",
+            "css": "tr.k.d",
+            "attributes": {
+                "name": {
+                    "css": "td.k"
+                },
+                "date": {
+                    "css": "td.l"
+                },
+                "id": {
+                    "regex": "href=\".*=(.*?)\""
+                }
+            }
+        }
+    }
+}

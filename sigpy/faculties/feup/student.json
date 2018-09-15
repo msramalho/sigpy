@@ -1,0 +1,68 @@
+{
+    "url": "student",
+    "picture": "picture",
+    "attributes": {
+        "name": {
+            "css": "div.estudante-info-nome"
+        },
+        "id": {
+            "css": "div.estudante-info-numero a"
+        },
+        "email": {
+            "derivate": "up%s@fe.up.pt",
+            "from": ["id"]
+        },
+        "courses": {
+            "model": "course",
+            "list": "True",
+            "css": "div.estudante-lista-curso-activo",
+            "attributes": {
+                "name": {
+                    "css": "div.estudante-lista-curso-nome"
+                },
+                "institution": {
+                    "css": "div.estudante-lista-curso-instit"
+                },
+                "id": {
+                    "regex": ".*pv_curso_id=(\\d+).*"
+                },
+                "enrolled": {
+                    "xpath": ".//td[text()='Ano da primeira inscrição:']/following::td[1]"
+                },
+                "year": {
+                    "xpath": ".//td[text()='Ano curricular atual:']/following::td[1]"
+                },
+                "state": {
+                    "xpath": ".//td[text()='Estado atual:']/following::td[1]"
+                }
+            }
+        },
+        "inactive_courses": {
+            "model": "course",
+            "list": "True",
+            "css": "div.tabela-longa",
+            "attributes": {
+                "name": {
+                    "css": "td.t.k"
+                },
+                "id": {
+                    "regex": ".*pv_curso_id=(\\d+).*"
+                },
+                "institution": {
+                    "xpath": ".//tr[@class='i']/td[2]/a/@title"
+                },
+                "old_id": {
+                    "css": "td.l"
+                },
+                "type": {
+                    "css": "td.t",
+                    "index": 2
+                },
+                "started": {
+                    "css": "td.l",
+                    "index": 1
+                }
+            }
+        }
+    }
+}

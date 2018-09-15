@@ -1,0 +1,35 @@
+{
+    "url": "course",
+    "attributes": {
+        "name": {
+            "regex": "<title>FEUP - (.+)<\/title>"
+        },
+        "cod": {
+            "xpath": ".//table[@class='formulario']/tr/td//text()[contains(., 'Código Oficial')]/following::td[1]"
+        },
+        "director": {
+            "model": "teacher",
+            "xpath": ".//table[@class='formulario']/tr[td[text()[contains(., 'Diretor:')]]]",
+            "attributes": {
+                "name": {
+                    "xpath": ".//td[2]"
+                },
+                "id": {
+                    "regex": "pct_codigo=(.+?)\""
+                }
+            }
+        },
+        "assistant_director": {
+            "model": "teacher",
+            "xpath": ".//table[@class='formulario']/tr[td[text()[contains(., 'Diretor Adjunto:')]]]",
+            "attributes": {
+                "name": {
+                    "xpath": ".//td[2]"
+                },
+                "id": {
+                    "regex": "pct_codigo=(.+?)\""
+                }
+            }
+        }
+    }
+}
