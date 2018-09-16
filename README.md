@@ -7,32 +7,90 @@ All of the main code is written and, other than bug fixing and enhancements, you
 In the end, this is yet another Sigarra-based project that I wished existed before I needed something like it.
 
 ## Examples
+Each example will hide all the code in the previous examples, the full script can be found [here]().
+
+For all the examples below, you need to start by importing sigpy:
+
 ```python
 from sigpy import get_faculty
+```
 
+### Login to your account
+Give your id (with or without `up`) and either hardcode your password or wait for prompt:
+
+```python
+...
 # get faculty object and login
 fac = get_faculty("feup")
+
 # login is optional but gives access to more information
 fac.login("201403027", "youWish")
+
 # if no password is given, secret prompt will appear
-
-# access student data!
-msr = fac.get_student("UP201403027") # up is case insensitive and also unnecessary
-print(msr) # complete JSON view of student information
-
-
-# access course data!
-mieic = fac.get_course(msr.courses[1].id) # pass the id of msr's second course (which is MIEIC)
-print(mieic)
-
-# access teacher data!
-pascoal = fac.get_teacher(mieic.director.id) # use the id of the course director
-
-foto = fac.get_picture(pascoal) # temporarily download picture
-foto.show() # shows image in external program
-foto.save() # saves image as "images/ID.jpg"
-foto.save("another/dir") # custom dir, absolute or relative to script
+fac.login("up201403027")
 ```
+
+### Extract Student Information
+
+```python
+...
+# access student data from their id
+# "up" is case insensitive and also optional
+msramalho = fac.get_student("UP201403027")
+
+# print a complete JSON view of student information
+print(msramalho)
+
+# or simply use the attribute you need
+# a complete list is available in the JSON view
+message = "Nice to meet you, %s" % msramalho.name
+```
+
+### Access Course Data
+
+```python
+
+# load mieic from the student (we know it is at index 1)
+mieic = fac.get_course(msramalho.courses[1].id)
+
+# print a complete JSON view of course information
+print(mieic)
+```
+
+### Access Teacher Data
+
+```python
+# use the id of the course director to access teacher data!
+# (the name of the variable may lose meaning in the future)
+pascoal = fac.get_teacher(mieic.director.id)
+
+# print a complete JSON view of teacher information
+print(pascoal)
+```
+
+### Get Student, Teacher and Room Pictures
+```python
+# use the get_picture method with the object
+# (temporarily download picture into a variable)
+photo1 = fac.get_picture(msramalho)
+
+# save the image locally on "./images/ID.jpg"
+photo1.save()
+# save the image locally on custom dir, absolute or relative
+photo1.save("another/dir")
+
+# you can do the same for teachers (and use chaining)
+vidal = fac.get_teacher("206415")
+fac.get_picture(vidal).show()
+```
+<p align="center"><img src="https://sigarra.up.pt/feup/en/FOTOGRAFIAS_SERVICE.foto?pct_cod=206415" height="200px"></p>
+
+```python
+# and even for room layout pictures
+room = fac.get_room(vidal.rooms[0].id)
+fac.get_picture(room).show()
+```
+<p align="center"><img src="https://sigarra.up.pt/feup/pt/instal_geral2.get_mapa?pv_id=77467" height="200px"></p>
 
 ## Contributing
 Essentially, there is a lot to do, most of it is _web scraping_ work:
