@@ -49,7 +49,7 @@ message = "Nice to meet you, %s" % msramalho.name
 ### Access Course Data
 
 ```python
-
+...
 # load mieic from the student (we know it is at index 1)
 mieic = fac.get_course(msramalho.courses[1].id)
 
@@ -60,6 +60,7 @@ print(mieic)
 ### Access Teacher Data
 
 ```python
+...
 # use the id of the course director to access teacher data!
 # (the name of the variable may lose meaning in the future)
 pascoal = fac.get_teacher(mieic.director.id)
@@ -70,6 +71,7 @@ print(pascoal)
 
 ### Get Student, Teacher and Room Pictures
 ```python
+...
 # use the get_picture method with the object
 # (temporarily download picture into a variable)
 photo1 = fac.get_picture(msramalho)
@@ -86,13 +88,27 @@ fac.get_picture(vidal).show()
 <p align="center"><img src="https://sigarra.up.pt/feup/en/FOTOGRAFIAS_SERVICE.foto?pct_cod=206415" height="200px"></p>
 
 ```python
+...
 # and even for room layout pictures
 room = fac.get_room(vidal.rooms[0].id)
 fac.get_picture(room).show()
 ```
 <p align="center"><img src="https://sigarra.up.pt/feup/pt/instal_geral2.get_mapa?pv_id=77467" height="200px"></p>
 
-## Contributing
+## Get All the Subjects of a Course
+```python
+...
+# the study plan is identified by course id and occurrence year
+# this will extract the information from the course study plan page
+study_plan = fac.get_study_plan((mieic.study_plan.id, mieic.study_plan.year))
+
+# to get all the information for all the optional subjects, for instance
+# this will perform one request per subject
+optionals = [fac.get_subject(s) for s in study_plan.optionals if s.code != ""]
+
+```
+
+# Contributing
 Essentially, there is a lot to do, most of it is _web scraping_ work:
  - Add more fields to current classes
  - Create new classes
