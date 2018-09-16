@@ -13,7 +13,7 @@
             "from": ["id"]
         },
         "orcid": {
-            "regex": "href=\"http://orcid.org/(.*?)\""
+            "regex": "href=\"http://orcid\\.org/(.*?)\""
         },
         "homepage":{
             "css": "div.pagina-pessoal a"

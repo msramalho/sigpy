@@ -7,6 +7,18 @@
         "cod": {
             "xpath": ".//table[@class='formulario']/tr/td//text()[contains(., 'Código Oficial')]/following::td[1]"
         },
+        "study_plan": {
+            "model": "study_plan",
+            "xpath": ".",
+            "attributes": {
+                "id": {
+                    "regex": "cur_planos_estudos_view\\?pv_plano_id=(\\d+)&"
+                },
+                "year": {
+                    "regex": "cur_planos_estudos_view\\?pv_plano_id=.*pv_ano_lectivo=(\\d+)"
+                }
+            }
+        },
         "director": {
             "model": "teacher",
             "xpath": ".//table[@class='formulario']/tr[td[text()[contains(., 'Diretor:')]]]",
