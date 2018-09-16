@@ -12,6 +12,12 @@
             "derivate": "up%s@fe.up.pt",
             "from": ["id"]
         },
+        "orcid": {
+            "regex": "href=\"http://orcid.org/(.*?)\""
+        },
+        "homepage":{
+            "css": "div.pagina-pessoal a"
+        },
         "courses": {
             "model": "course",
             "list": "True",
