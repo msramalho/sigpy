@@ -58,7 +58,7 @@ def parse_attribute(tree, config, res):
         elif "derivate" in config:  # this is an attribute derivated from another
             return parse_derivate(config, res)
     except Exception as e:  # some attributes do not exist if not logged in
-        print("[-] Error: %s when parsing %s... Ignoring attribute" % (str(e), config))
+        print("[-] Error: %s when parsing %s... \n    Ignoring attribute - may be due to lack of login" % (str(e), config))
         return None
 
 
