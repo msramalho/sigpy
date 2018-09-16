@@ -29,6 +29,8 @@ class interface:
         "picture": False,
         "room_picture": False,
         "course": False,
+        "study_plan": False,
+        "subject": False,
         "student": False,
         "teacher": False,
         "base": False,
@@ -48,7 +50,10 @@ class interface:
 
     def get_class(self, class_name, route_tuple, original=None):
         conf = interface.classes[class_name]
-        req = self.session.get(interface.routes[conf["url"]] % route_tuple)
+        url = interface.routes[conf["url"]] % route_tuple  # format the url with the given data
+        req = self.session.get(url)  # perform the request
+        if req.status_code != 200:  # if request fails, display the error code (404, ...)
+            print("[-] [%s] status code on:\n    %s" % (req.status_code, url))
         tree = fromstring(req.text)
         return get_class_from_dict(class_name, parse_attributes(tree, conf["attributes"], original))
 
