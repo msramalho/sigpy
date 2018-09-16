@@ -28,10 +28,10 @@ print(mieic)
 # access teacher data!
 pascoal = fac.get_teacher(mieic.director.id) # use the id of the course director
 
-fotogenico = fac.get_picture(pascoal) # temporarily download picture
-fotogenico.show() # shows image in external program
-fotogenico.save() # saves image as "images/ID.jpg"
-fotogenico.save("another/dir") # custom dir, absolute or relative to script
+foto = fac.get_picture(pascoal) # temporarily download picture
+foto.show() # shows image in external program
+foto.save() # saves image as "images/ID.jpg"
+foto.save("another/dir") # custom dir, absolute or relative to script
 ```
 
 ## Contributing
