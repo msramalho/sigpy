@@ -95,7 +95,7 @@ fac.get_picture(room).show()
 ```
 <p align="center"><img src="https://sigarra.up.pt/feup/pt/instal_geral2.get_mapa?pv_id=77467" height="200px"></p>
 
-## Get All the Subjects of a Course
+### Get All the Subjects of a Course
 ```python
 ...
 # the study plan is identified by course id and occurrence year
@@ -105,8 +105,9 @@ study_plan = fac.get_study_plan((mieic.study_plan.id, mieic.study_plan.year))
 # to get all the information for all the optional subjects, for instance
 # this will perform one request per subject
 optionals = [fac.get_subject(s) for s in study_plan.optionals if s.code != ""]
-
 ```
+
+
 
 # Contributing
 Essentially, there is a lot to do, most of it is _web scraping_ work:
