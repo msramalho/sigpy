@@ -1,5 +1,6 @@
 import sys
 import os
+from os.path import basename, splitext
 import re
 import requests
 import importlib
@@ -12,34 +13,14 @@ from lxml.cssselect import CSSSelector as css
 from lxml import etree
 from bs4 import BeautifulSoup
 
-# sys.path.append('../../')
-# from sigpy import *
-# from parser import *
-# from classes.model import model
 from sigpy.classes.picture import picture
 from sigpy.parser import parse_attributes, get_class_from_dict
 
 
 # this class defines all the variables and methods that the faculty class should implement
 class interface:
-    routes = {
-        "orcid": "http://orcid.org/%s",
-        "base": False,
-        "index": False,
-        "picture": False,
-        "room_picture": False,
-        "course": False,
-        "study_plan": False,
-        "subject": False,
-        "student": False,
-        "teacher": False,
-        "base": False,
-        "room": False,
-        "auth": "https://sigarra.up.pt/feup/pt/vld_validacao.validacao"
-    }
-
     configs = {
-        # "pictures_folder": "./images/",
+        "auth": "https://sigarra.up.pt/feup/pt/vld_validacao.validacao",
         "auth_failed": "O conjunto utilizador/senha não é válido."
     }
 
@@ -50,7 +31,7 @@ class interface:
 
     def get_class(self, class_name, route_tuple, original=None):
         conf = interface.classes[class_name]
-        url = interface.routes[conf["url"]] % route_tuple  # format the url with the given data
+        url = conf["url"] % route_tuple  # format the url with the given data
         req = self.session.get(url)  # perform the request
         if req.status_code != 200:  # if request fails, display the error code (404, ...)
             print("[-] [%s] status code on:\n    %s" % (req.status_code, url))
@@ -66,9 +47,9 @@ class interface:
     # reads a picture from the web and returns it, if it exists, m is a model instance
     def get_picture(self, m):
         if "picture" in interface.classes[m.class_name]:  # this instance has picture
-            route_name = interface.classes[m.class_name]["picture"]
+            route = interface.classes[m.class_name]["picture"]
             pid = getattr(m, "picture_id", m.id)
-            r = self.session.get(interface.routes[route_name] % str(pid), stream=True)
+            r = self.session.get(route % str(pid), stream=True)
             # path = "%s.jpg" % pid
             # print(path)
             if r.status_code == 200:
@@ -81,7 +62,7 @@ class interface:
             password = getpass("Password for %s?\n" % username)
         self.session = requests.Session()
         payload = {'p_user': username, 'p_pass': password}
-        r = self.session.post(interface.routes["auth"], params=payload)
+        r = self.session.post(interface.configs["auth"], params=payload)
         if re.search(interface.configs["auth_failed"], r.text):
             self.session = requests
             return False
@@ -113,8 +94,8 @@ def get_faculty(faculty="feup"):
     for filename in file_list:  # iterate over the files
         # for each, read contents, parse the JSON and load it into fac.classes for interface to use
         with open(filename, encoding="utf-8") as f:
+            model = splitext(basename(filename))[0]  # get the model name from the filename
             json_data = json.load(f)
-            name = json_data["url"]  # the name of the class, must match name of the file
-            fac.classes[name] = json_data
-            setattr(fac, "get_%s" % name, fac.create_dynamic_method(name))
+            fac.classes[model] = json_data
+            setattr(fac, "get_%s" % model, fac.create_dynamic_method(model))
     return fac

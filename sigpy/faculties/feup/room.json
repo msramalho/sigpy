@@ -1,6 +1,6 @@
 {
-    "url": "room",
-    "picture": "room_picture",
+    "url": "https://sigarra.up.pt/feup/pt/instal_geral.espaco_view?pv_id=%s",
+    "picture": "https://sigarra.up.pt/feup/pt/instal_geral2.get_mapa?pv_id=%s",
     "attributes": {
         "id": {
             "regex": "href=\".*pv_id=(.*?)\""

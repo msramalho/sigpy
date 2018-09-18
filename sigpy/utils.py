@@ -1,6 +1,6 @@
 import datetime
 
-def getSchoolYear():
+def get_school_year():
     now = datetime.datetime.now()
     if now.month <= 8:
         return now.year-1

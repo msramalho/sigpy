@@ -1,5 +1,5 @@
 {
-    "url": "study_plan",
+    "url": "https://sigarra.up.pt/feup/pt/cur_geral.cur_planos_estudos_view?pv_plano_id=%s&pv_ano_lectivo=%s&pv_tipo_cur_sigla=&pv_origem=CUR",
     "attributes": {
         "years": {
             "model": "year",
