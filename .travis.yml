@@ -1,0 +1,12 @@
+language: python
+python:
+  - "3.6"
+cache: pip
+install:
+  - pip install ../sigpy/
+  - pip install coverage
+script:
+  - coverage run -m unittest
+  - coverage report -m --include="test_*.py"
+notifications:
+  email: false

@@ -1,4 +1,7 @@
 # Sigpy
+
+[![Build Status](https://travis-ci.org/msramalho/sigpy.svg)](https://travis-ci.org/msramalho/sigpy)
+
 This is a Sigarra Python API based on Recursive Web Scraping Parser (wtf). Essentially, it performs requests as needed and parses the html information into objects you can use.
 
 All of the main code is written and, other than bug fixing and enhancements, you will only need to edit `.json` files!
