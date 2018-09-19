@@ -76,7 +76,7 @@ class interface:
     def create_dynamic_method(self, name):
         def _get_method(id, original=None):
             thing = self.get_class(name, interface.get_id(id), original)
-            thing.id = id
+            thing.id = id if type(id) is not tuple else id[0]
             return thing
         return _get_method
 
