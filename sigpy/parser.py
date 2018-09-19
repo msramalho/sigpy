@@ -1,17 +1,15 @@
 import sys
+import re
 from lxml.html import fromstring, HtmlElement
 from lxml.cssselect import CSSSelector as css
 from lxml import etree
-import re
 
 from sigpy.classes.model import model
 
 
-# ROUTE PARSING FUCTIONS
+# ROUTE PARSING FUNCTIONS
 # given a class name and a dict of attribute->value, create a new class (child of model) all the possibilities must be imported (TODO: use __init__.py)
 def get_class_from_dict(class_name, dictionary):
-    # klass = globals()[class_name]
-    # return klass(dictionary)
     return model(class_name, dictionary)
 
 
@@ -91,6 +89,8 @@ def parse_attributes(tree, attributes, original=None):
         # else load from the configurations
         if "model" not in config:  # this is a simple attr with direct css
             res[attr] = parse_attribute(tree, config, res)
+            if "boolean" in config:  # we only want a yes or no value
+                res[attr] = res[attr] is not None
         elif "model" in config:  # handle classes
             element = parse_element(tree, config)
             if "list" in config:  # handle list of said class
