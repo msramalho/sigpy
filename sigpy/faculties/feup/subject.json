@@ -3,6 +3,25 @@
     "attributes": {
         "name": {
             "regex": "<title>FEUP - (.*?)</title>"
+        },
+        "code": {
+            "xpath": ".//td[text()='Código:']/following::td[1]"
+        },
+        "initials": {
+            "xpath": ".//td[text()='Sigla:']/following::td[1]"
+        },
+        "moodle": {
+            "regex": "moodle_portal()",
+            "boolean": "True"
+        },
+        "department":{
+            "model": "department",
+            "xpath": ".//h2[contains(text(),'Ocorrência:')]//following-sibling::table[@class='formulario']",
+            "attributes":{
+                "id": {
+                    "regex": "uni_geral\\.unidade_view\\?pv_unidade=(\\d+)"
+                }
+            }
         }
     }
 }
