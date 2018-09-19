@@ -6,8 +6,8 @@ All of the main code is written and, other than bug fixing and enhancements, you
 
 In the end, this is yet another Sigarra-based project that I wished existed before I needed something like it.
 
-## Examples
-Each example will hide all the code in the previous examples, the full script can be found [here]().
+# Examples
+Each example will hide all the code of the previous examples.
 
 For all the examples below, you need to start by importing sigpy:
 
@@ -19,7 +19,6 @@ from sigpy import get_faculty
 Give your id (with or without `up`) and either hardcode your password or wait for prompt:
 
 ```python
-...
 # get faculty object and login
 fac = get_faculty("feup")
 
@@ -33,7 +32,6 @@ fac.login("up201403027")
 ### Extract Student Information
 
 ```python
-...
 # access student data from their id
 # "up" is case insensitive and also optional
 msramalho = fac.get_student("UP201403027")
@@ -49,7 +47,6 @@ message = "Nice to meet you, %s" % msramalho.name
 ### Access Course Data
 
 ```python
-...
 # load mieic from the student (we know it is at index 1)
 # the course url receives the id and the current school year,
 # get_school_year returns the current school year, but could be hardcoded
@@ -62,7 +59,6 @@ print(mieic)
 ### Access Teacher Data
 
 ```python
-...
 # use the id of the course director to access teacher data!
 # (the name of the variable may lose meaning in the future)
 pascoal = fac.get_teacher(mieic.director.id)
@@ -73,7 +69,6 @@ print(pascoal)
 
 ### Get Student, Teacher and Room Pictures
 ```python
-...
 # use the get_picture method with the object
 # (temporarily download picture into a variable)
 photo1 = fac.get_picture(msramalho)
@@ -90,7 +85,6 @@ fac.get_picture(vidal).show()
 <p align="center"><img src="https://sigarra.up.pt/feup/en/FOTOGRAFIAS_SERVICE.foto?pct_cod=206415" height="200px"></p>
 
 ```python
-...
 # and even for room layout pictures
 room = fac.get_room(vidal.rooms[0].id)
 fac.get_picture(room).show()
@@ -99,7 +93,6 @@ fac.get_picture(room).show()
 
 ### Get All the Subjects of a Course
 ```python
-...
 # the study plan is identified by course id and occurrence year
 # this will extract the information from the course study plan page
 study_plan = fac.get_study_plan((mieic.study_plan.id, mieic.study_plan.year))
@@ -111,7 +104,6 @@ optionals = [fac.get_subject(s) for s in study_plan.optionals if s.code != ""]
 
 ### Get Subject Data and its Classes (all students for each class of that subject)
 ```python
-...
 # assuming we have a subject id (could be extracted from study_plan above)
 plog = fac.get_subject(420002)
 
