@@ -109,7 +109,7 @@ study_plan = fac.get_study_plan((mieic.study_plan.id, mieic.study_plan.year))
 optionals = [fac.get_subject(s) for s in study_plan.optionals if s.code != ""]
 ```
 
-### Get Subject and Classes for it Data
+### Get Subject Data and its Classes (all students for each class of that subject)
 ```python
 ...
 # assuming we have a subject id (could be extracted from study_plan above)
