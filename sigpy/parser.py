@@ -65,8 +65,9 @@ def parse_element(tree, config):
     try:
         if "css" in config:  # this is an attribute from css
             return tree.cssselect(config["css"])
-        elif "xpath" in config:
-            return tree.xpath(config["xpath"])[get_index(config)]
+        elif "xpath" in config: # xpath always returns a list, so an extra step is needed
+            res = tree.xpath(config["xpath"])
+            return res[get_index(config)] if "list" not in config else res
     except Exception as e:  # some attributes do not exist if not logged in
         print("[-] Error: %s when parsing %s... Ignoring element" % (str(e), config))
         return []
