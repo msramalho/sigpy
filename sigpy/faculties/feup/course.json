@@ -1,5 +1,6 @@
 {
     "url": "https://sigarra.up.pt/feup/pt/cur_geral.cur_view?pv_curso_id=%s&pv_ano_lectivo=%d",
+    "help": "This URL requires: (course_id, school_year)",
     "attributes": {
         "name": {
             "regex": "<title>FEUP - (.+)<\/title>"

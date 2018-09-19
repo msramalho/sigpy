@@ -1,0 +1,36 @@
+{
+    "url": "https://sigarra.up.pt/feup/pt/it_listagem.lista_turma_disciplina?pv_curso_id=%s&pv_ocorrencia_id=%s&pv_ano_lectivo=%s&pv_periodo_id=%s",
+    "help": "This URL requires: (course_id, subject_id aka occurrence_id, school_year, semester)",
+    "attributes": {
+        "classes": {
+            "model": "class",
+            "list": "True",
+            "xpath": ".//h3[contains(text(),'Turma: ')]//following-sibling::table[@class='tabela']",
+            "attributes": {
+                "students": {
+                    "model": "student",
+                    "list": "True",
+                    "css": "tr.i,tr.p",
+                    "attributes": {
+                        "name": {
+                            "xpath": ".//td[1]"
+                        },
+                        "id": {
+                            "xpath": ".//td[2]"
+                        },
+                        "email": {
+                            "xpath": ".//td[3]"
+                        },
+                        "allocation_date": {
+                            "xpath": ".//td[4]"
+                        },
+                        "enrolled": {
+                            "regex": "/feup/pt/imagens/Visto()",
+                            "boolean": "True"
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

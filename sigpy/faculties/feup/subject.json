@@ -1,5 +1,6 @@
 {
     "url": "https://sigarra.up.pt/feup/pt/ucurr_geral.ficha_uc_view?pv_ocorrencia_id=%s",
+    "help": "This URL requires: (subject_id)",
     "attributes": {
         "name": {
             "regex": "<title>FEUP - (.*?)</title>"
@@ -13,6 +14,9 @@
         "moodle": {
             "regex": "moodle_portal()",
             "boolean": "True"
+        },
+        "semester": {
+            "regex": "Ocorrência: \\d+/\\d+ - (\\d+)S"
         },
         "department":{
             "model": "department",
