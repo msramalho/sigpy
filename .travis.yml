@@ -7,6 +7,6 @@ install:
   - pip install coverage
 script:
   - coverage run -m unittest
-  - coverage report -m --include="test_*.py"
+  - coverage report --include="sigpy/*"
 notifications:
   email: false

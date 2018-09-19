@@ -12,7 +12,7 @@ class SigTest(unittest.TestCase):
         course = self.fac.get_course((742, get_school_year()))
         self.assertEqual(course.name, "Mestrado Integrado em Engenharia Informática e Computação")
         self.assertEqual(course.cod, "9459")
-        self.assertEqual(course.id, (742, get_school_year()))
+        self.assertEqual(course.id, 742)
         self.assertIsNotNone(course.director)
         self.assertIsNotNone(course.assistant_director)
 
