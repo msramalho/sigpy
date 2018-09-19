@@ -109,6 +109,25 @@ study_plan = fac.get_study_plan((mieic.study_plan.id, mieic.study_plan.year))
 optionals = [fac.get_subject(s) for s in study_plan.optionals if s.code != ""]
 ```
 
+### Get Subject and Classes for it Data
+```python
+...
+# assuming we have a subject id (could be extracted from study_plan above)
+plog = fac.get_subject(420002)
+
+# get all the classes for this subject (needs course, school year and semester)
+# if you miss some parameter you will see a message with all the parameters
+# notice that it is ONLE ONE parameter, which is a tuple
+subject_classes = fac.get_classes((mieic.id, plog.id, get_school_year(), plog.semester))
+
+# now you can read all the students grouped by class
+for c in subject_classes.classes:
+    for student in c:
+        print("Hello %s, your email is %s)" % (student.name, student.email))
+# or simply list all the students in a given class (1st in this case (0 indexed))
+print([s.name for s in classes.classes[0].students])
+```
+
 # Testing
 Tests require a valid user account, to run them do:
 ```python
@@ -158,7 +177,7 @@ each of the `class.json` files has the following format:
         "attr2": {"regex": "some regex expression"},
         "attr3": {"xpath": "some xpath selector"},
         "attr4": {"derivate": "string for format, eg: up%s@fe.up.pt for email", "from": ["attr1"]},
-        "attr5": {"css|regex|xpath": "if we only care about if it was empty or not", "boolean": "True"},
+        "attr5": {"css|regex|xpath": "if we only care about if it was empty or not, regex must include a catch group", "boolean": "True"},
         "attr6": {
             "list": "True",
             "model": "a list of what?",
