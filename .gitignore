@@ -5,3 +5,4 @@ __pycache__/utils.cpython-36.pyc
 images/*
 */images/*
 ignore/*
+\.coverage
