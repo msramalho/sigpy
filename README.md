@@ -1,5 +1,5 @@
 # Sigpy
-This is a Sigarra Python API based on Recursive Web Scraping Parser (wtf). Essentially it performs requests as needed and parses the html information into objects you can use.
+This is a Sigarra Python API based on Recursive Web Scraping Parser (wtf). Essentially, it performs requests as needed and parses the html information into objects you can use.
 
 All of the main code is written and, other than bug fixing and enhancements, you will only need to edit `.json` files!
 
@@ -51,7 +51,9 @@ message = "Nice to meet you, %s" % msramalho.name
 ```python
 ...
 # load mieic from the student (we know it is at index 1)
-mieic = fac.get_course(msramalho.courses[1].id)
+# the course url receives the id and the current school year,
+# get_school_year returns the current school year, but could be hardcoded
+mieic = fac.get_course((msramalho.courses[1].id, get_school_year()))
 
 # print a complete JSON view of course information
 print(mieic)
@@ -107,8 +109,16 @@ study_plan = fac.get_study_plan((mieic.study_plan.id, mieic.study_plan.year))
 optionals = [fac.get_subject(s) for s in study_plan.optionals if s.code != ""]
 ```
 
-
-
+# Testing
+Tests require a valid user account, to run them do:
+```python
+python -m unittest
+```
+And to get the coverage:
+```python
+coverage run -m unittest
+coverage report --include="sigpy/*"
+```
 # Contributing
 Essentially, there is a lot to do, most of it is _web scraping_ work:
  - Add more fields to current classes
@@ -145,10 +155,11 @@ each of the `class.json` files has the following format:
     "picture": "picture (this is optional and usually just for people)",
     "attributes": {
         "attr1": {"css": "some css selector"},
-        "attr2": {"regex": "some css selector"},
-        "attr3": {"xpath": "some css selector"},
-        "attr4": {"derivate": "some css selector", "from": ["attr1"]},
-        "attr5": {
+        "attr2": {"regex": "some regex expression"},
+        "attr3": {"xpath": "some xpath selector"},
+        "attr4": {"derivate": "string for format, eg: up%s@fe.up.pt for email", "from": ["attr1"]},
+        "attr5": {"css|regex|xpath": "if we only care about if it was empty or not", "boolean": "True"},
+        "attr6": {
             "list": "True",
             "model": "a list of what?",
             "css": "to find the first element, ",
