@@ -30,13 +30,16 @@ class interface:
         self.session = requests
 
     def get_class(self, class_name, route_tuple, original=None):
-        conf = interface.classes[class_name]
-        url = conf["url"] % route_tuple  # format the url with the given data
+        config = interface.classes[class_name]
+        try:
+            url = config["url"] % route_tuple  # format the url with the given data
+        except Exception as e:
+            print("[-] Error: %s in formatting URL with your tuple %s: \n    %s" % (str(e), route_tuple, config["help"]))
         req = self.session.get(url)  # perform the request
         if req.status_code != 200:  # if request fails, display the error code (404, ...)
             print("[-] [%s] status code on:\n    %s" % (req.status_code, url))
         tree = fromstring(req.text)
-        return get_class_from_dict(class_name, parse_attributes(tree, conf["attributes"], original))
+        return get_class_from_dict(class_name, parse_attributes(tree, config["attributes"], original))
 
     # static method that receives an id and returns the numeric part
     def get_id(id):
