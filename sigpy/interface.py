@@ -14,7 +14,9 @@ from lxml import etree
 from bs4 import BeautifulSoup
 
 from sigpy.classes.picture import picture
+from sigpy.classes.timetable import timetable
 from sigpy.parser import parse_attributes, get_class_from_dict
+from sigpy.utils import get_school_year
 
 
 # this class defines all the variables and methods that the faculty class should implement
@@ -35,11 +37,16 @@ class interface:
             url = config["url"] % route_tuple  # format the url with the given data
         except Exception as e:
             print("[-] Error: %s in formatting URL with your tuple %s: \n    %s" % (str(e), route_tuple, config["help"]))
+        req = self.GET(url)
+        tree = fromstring(req.text)
+        return get_class_from_dict(class_name, parse_attributes(tree, config["attributes"], original))
+
+    # helper method to perform and debug requests on failure
+    def GET(self, url):
         req = self.session.get(url)  # perform the request
         if req.status_code != 200:  # if request fails, display the error code (404, ...)
             print("[-] [%s] status code on:\n    %s" % (req.status_code, url))
-        tree = fromstring(req.text)
-        return get_class_from_dict(class_name, parse_attributes(tree, config["attributes"], original))
+        return req
 
     # static method that receives an id and returns the numeric part
     def get_id(id):
@@ -53,11 +60,19 @@ class interface:
             route = interface.classes[m.class_name]["picture"]
             pid = getattr(m, "picture_id", m.id)
             r = self.session.get(route % str(pid), stream=True)
-            # path = "%s.jpg" % pid
-            # print(path)
             if r.status_code == 200:
                 return picture("%s.jpg" % pid, r.raw)
         return False
+
+    # parses a timetable from the web and returns it, if it exists, m is a model instance
+    def get_timetable(self, m, school_year = get_school_year()):
+        if "timetable" in interface.classes[m.class_name]: # this instance has a timetable
+            route = interface.classes[m.class_name]["timetable"] % (m.id, school_year)
+            req = self.GET(route)
+            if req:
+                return timetable(req.text)
+        return False
+
 
     # log a user in, either receive or prompt for password, tests using configs["auth_failed"]
     def login(self, username, password=None):  # creates a requests session to access protected pages
