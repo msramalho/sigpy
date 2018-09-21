@@ -16,6 +16,9 @@
             "regex": "moodle_portal()",
             "boolean": "True"
         },
+        "year":{
+            "regex": "<td rowspan=\"1\" class=\"l\">(\\d+)</td>"
+        },
         "semester": {
             "regex": "Ocorrência: \\d+/\\d+ - (\\d+)S"
         },

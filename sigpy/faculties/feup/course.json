@@ -8,6 +8,9 @@
         "cod": {
             "xpath": ".//table[@class='formulario']/tr/td//text()[contains(., 'Código Oficial')]/following::td[1]"
         },
+        "initials": {
+            "xpath": ".//table[@class='formulario']/tr/td//text()[contains(., 'Sigla:')]/following::td[1]"
+        },
         "study_plan": {
             "model": "study_plan",
             "xpath": ".",
@@ -22,7 +25,7 @@
         },
         "director": {
             "model": "teacher",
-            "xpath": ".//table[@class='formulario']/tr[td[text()[contains(., 'Diretor:')]]]",
+            "xpath": ".//table[@class='formulario']/tr[td[text()[contains(., 'Diretor:')]]]|.//table[@class='formulario']/tr[td[text()[contains(., 'Docente Responsável:')]]]",
             "attributes": {
                 "name": {
                     "xpath": ".//td[2]"
