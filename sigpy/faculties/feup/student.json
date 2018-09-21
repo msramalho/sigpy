@@ -1,7 +1,7 @@
 {
     "url": "https://sigarra.up.pt/feup/pt/fest_geral.cursos_list?pv_num_unico=%s",
-    "help": "This URL requires: (student_id)",
     "picture": "https://sigarra.up.pt/feup/pt/fotografias_service.foto?pct_cod=%s",
+    "help": "This URL requires: (student_id)",
     "attributes": {
         "name": {
             "css": "div.estudante-info-nome"

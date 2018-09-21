@@ -1,6 +1,7 @@
 {
     "url": "https://sigarra.up.pt/feup/pt/ucurr_geral.ficha_uc_view?pv_ocorrencia_id=%s",
-    "help": "This URL requires: (subject_id)",
+    "timetable": "https://sigarra.up.pt/feup/pt/hor_geral.ucurr_view?pv_ocorrencia_id=%s&pv_ano_lectivo=%s",
+    "help": "This URL requires: (subject_id)\nThe timetable schedule requires: (subject_id, school_year)",
     "attributes": {
         "name": {
             "regex": "<title>FEUP - (.*?)</title>"
