@@ -16,7 +16,7 @@ from bs4 import BeautifulSoup
 from sigpy.classes.picture import picture
 from sigpy.classes.timetable import timetable
 from sigpy.parser import parse_attributes, get_class_from_dict
-from sigpy.utils import get_school_year, vprint, VERBOSE
+from sigpy.utils import get_school_year, vprint, set_verbose
 from sigpy.cache import cache
 
 
@@ -29,11 +29,13 @@ class interface:
 
     classes = {}  # this is the property set from the JSON files
 
-    def __init__(self, faculty, save_cache, verbose = True):
+    def __init__(self, faculty, save_cache):
         self.session = requests
         self.name = faculty
         self.cache = cache(self.name, save_cache)
-        VERBOSE = verbose
+
+    def set_verbose(self, verbose):
+        set_verbose(verbose)
 
     def get_class(self, class_name, route_tuple, original=None):
         config = interface.classes[class_name]

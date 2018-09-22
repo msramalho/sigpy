@@ -31,8 +31,15 @@ def constructString(obj, indent = -1):
     res[:] = [item for item in res if item != '']#remove empty elements
     return "\n".join(res)
 
-VERBOSE = True
+
+VERBOSE = False
+
+def set_verbose(verbose):
+    global VERBOSE
+    VERBOSE = verbose
+
 # only print if the verbose flag is set
 def vprint(message):
+    global VERBOSE
     if VERBOSE:
         print(message)
