@@ -31,5 +31,8 @@ def constructString(obj, indent = -1):
     res[:] = [item for item in res if item != '']#remove empty elements
     return "\n".join(res)
 
-
-#TODO:  function that removes all the expected but irrelevant html from a string to optimize regex search time and all that
+VERBOSE = True
+# only print if the verbose flag is set
+def vprint(message):
+    if VERBOSE:
+        print(message)
