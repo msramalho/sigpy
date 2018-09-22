@@ -1,4 +1,8 @@
 from setuptools import setup
+import os
+
+with open('requirements.txt') as f:
+    required = f.read().splitlines()
 
 setup(name='sigpy',
       version='1.0',
@@ -7,4 +11,5 @@ setup(name='sigpy',
       author='msramalho',
       license='MIT',
       packages=['sigpy'],
+      install_requires=required,
       zip_safe=False)

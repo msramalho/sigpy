@@ -13,8 +13,7 @@ from lxml.cssselect import CSSSelector as css
 from lxml import etree
 from bs4 import BeautifulSoup
 
-from sigpy.classes.picture import picture
-from sigpy.classes.timetable import timetable
+from sigpy.classes import picture, timetable
 from sigpy.parser import parse_attributes, get_class_from_dict
 from sigpy.utils import get_school_year, vprint, set_verbose
 from sigpy.cache import cache
@@ -37,18 +36,18 @@ class interface:
     def set_verbose(self, verbose):
         set_verbose(verbose)
 
-    def get_class(self, class_name, route_tuple, original=None):
+    def get_class(self, class_name, route_tuple, original=None, use_cache=True):
         config = interface.classes[class_name]
         try:
             url = config["url"] % route_tuple  # format the url with the given data
         except Exception as e:
             vprint("[-] Error: %s in formatting URL with your tuple %s: \n    %s" % (str(e), route_tuple, config["help"]))
-        tree = fromstring(self.GET(url))
+        tree = fromstring(self.GET(url, use_cache))
         return get_class_from_dict(class_name, parse_attributes(tree, config["attributes"], original))
 
     # helper method to perform and debug requests on failure
-    def GET(self, url):
-        return self.cache.get(self.session, url)
+    def GET(self, url, use_cache):
+        return self.cache.get(self.session, url, use_cache)
 
     # static method that receives an id and returns the numeric part
     def get_id(id):
@@ -67,10 +66,10 @@ class interface:
         return False
 
     # parses a timetable from the web and returns it, if it exists, m is a model instance
-    def get_timetable(self, m, school_year=get_school_year()):
+    def get_timetable(self, m, school_year=get_school_year(), use_cache=True):
         if "timetable" in interface.classes[m.class_name]:  # this instance has a timetable
             route = interface.classes[m.class_name]["timetable"] % (m.id, school_year)
-            return timetable(self.GET(route))
+            return timetable(self.GET(route, use_cache))
         return False
 
     # log a user in, either receive or prompt for password, tests using configs["auth_failed"]
@@ -91,8 +90,8 @@ class interface:
 
     # add a method get_something(id, original=True) to itself where "something" is a string
     def create_dynamic_method(self, name):
-        def _get_method(id, original=None):
-            thing = self.get_class(name, interface.get_id(id), original)
+        def _get_method(id, original=None, use_cache=True):
+            thing = self.get_class(name, interface.get_id(id), original, use_cache)
             thing.id = id if type(id) is not tuple else id[0]
             return thing
         return _get_method

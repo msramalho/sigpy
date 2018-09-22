@@ -24,8 +24,8 @@ class cache:
         return {}
 
     # performs a GET request, if necessary, and returns the HMTL response
-    def get(self, session, url):
-        if self.save_cache and url in self._cache:  # value is stored in cache
+    def get(self, session, url, use_cache=True):
+        if self.save_cache and use_cache and url in self._cache:  # value is stored in cache
             return self._cache[url]
         else:  # a new request is needed
             req = session.get(url)  # perform the request

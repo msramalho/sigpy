@@ -1,0 +1,6 @@
+lxml==4.1.1
+requests==2.18.4
+htmlmin==0.1.12
+setuptools==28.8.0
+Pillow==5.2.0
+beautifulsoup4==4.6.3
