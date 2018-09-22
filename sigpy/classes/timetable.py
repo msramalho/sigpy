@@ -36,7 +36,6 @@ class timetable:
                 content = ''.join([str(tostring(c, encoding="unicode")) for c in col.iterchildren()])
                 content = col.text if not len(content) else content
                 content = content.replace(u'\xa0', u' ').strip()
-                # print(col, rowspan, colspan, content)
 
                 for x in range(rowspan):
                     for y in range(colspan):
@@ -106,8 +105,6 @@ class timetable:
     # extracts overlapping events from a timetable page
     def _parse_overlapping_events(self):
         events = []
-        # if len(self.tree.cssselect("table.dados th[colspan='6']")):
-        print(self.tree.cssselect("table.dados td.d"))
         for o in self.tree.cssselect("table.dados tr.d"):
             events.append(self._get_overlapping_event(o))
         return events

@@ -5,6 +5,7 @@ from lxml.cssselect import CSSSelector as css
 from lxml import etree
 
 from sigpy.classes.model import model
+from sigpy.utils import vprint
 
 
 # ROUTE PARSING FUNCTIONS
@@ -56,7 +57,7 @@ def parse_attribute(tree, config, res):
         elif "derivate" in config:  # this is an attribute derivated from another
             return parse_derivate(config, res)
     except Exception as e:  # some attributes do not exist if not logged in
-        print("[-] Error: %s when parsing %s... \n    Ignoring attribute - may be due to lack of login" % (str(e), config))
+        vprint("[-] Error: %s when parsing %s... \n    Ignoring attribute - may be due to lack of login" % (str(e), config))
         return None
 
 
@@ -69,7 +70,7 @@ def parse_element(tree, config):
             res = tree.xpath(config["xpath"])
             return res[get_index(config)] if "list" not in config else res
     except Exception as e:  # some attributes do not exist if not logged in
-        print("[-] Error: %s when parsing %s... Ignoring element" % (str(e), config))
+        vprint("[-] Error: %s when parsing %s... Ignoring element" % (str(e), config))
         return []
 
 
