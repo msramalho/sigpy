@@ -6,3 +6,4 @@ images/*
 */images/*
 ignore/*
 \.coverage
+*_cache.json
