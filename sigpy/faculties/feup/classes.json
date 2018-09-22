@@ -5,12 +5,13 @@
         "classes": {
             "model": "class",
             "list": "True",
-            "xpath": ".//h3[contains(text(),'Turma: ')]//following-sibling::table[@class='tabela']",
+            "xpath": ".//h3[contains(text(),'Turma: ')]",
             "attributes": {
+                "name": {"regex":"Turma: (\\S+)"},
                 "students": {
                     "model": "student",
                     "list": "True",
-                    "css": "tr.i,tr.p",
+                    "xpath": ".//following-sibling::table[@class='tabela']/tr[@class='i']|.//following-sibling::table[@class='tabela']/tr[@class='p']",
                     "attributes": {
                         "name": {
                             "xpath": ".//td[1]"
