@@ -3,8 +3,10 @@ python:
   - "3.6"
 cache: pip
 install:
-  - pip install ../sigpy/
-  - pip install coverage
+  - pip install coverage, unittest
+  - pip install pipreqs
+  - pipreqs .
+  - pip install .
 script:
   - coverage run -m unittest
   - coverage report --include="sigpy/*"
