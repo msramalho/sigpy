@@ -9,6 +9,11 @@ All of the main code is written and, other than bug fixing and enhancements, you
 
 In the end, this is yet another Sigarra-based project that I wished existed before I needed something like it.
 
+# Instalation
+```bash
+pip install git+https://github.com/msramalho/sigpy
+```
+
 # Examples
 Each example will hide all the code of the previous examples.
 
@@ -59,7 +64,7 @@ mieic = fac.get_course((msramalho.courses[1].id, get_school_year()))
 print(mieic)
 ```
 
-### Access Teacher Data
+### Extract Teacher Information
 
 ```python
 # use the id of the course director to access teacher data!
@@ -100,9 +105,14 @@ fac.get_picture(room).show()
 # this will extract the information from the course study plan page
 study_plan = fac.get_study_plan((mieic.study_plan.id, mieic.study_plan.year))
 
-# to get all the information for all the optional subjects, for instance
+# to get ALL the information for all the mandatory subjects
+# they are grouped by year->semester->subjects
 # this will perform one request per subject
-optionals = [fac.get_subject(s) for s in study_plan.optionals if s.code != ""]
+mandatory = [fac.get_subject(s.id) for y in study_plan.years for sm in y.semesters for s in sm.subjects if s.code != ""]
+
+# to get ALL the information for all the optional subjects, for instance
+# this will perform one request per subject
+optionals = [fac.get_subject(s.id) for s in study_plan.optionals if s.code != ""]
 ```
 
 ### Get Subject Data and its Classes (all students for each class of that subject)
@@ -121,6 +131,56 @@ for c in subject_classes.classes:
         print("Hello %s, your email is %s)" % (student.name, student.email))
 # or simply list all the students in a given class (1st in this case (0 indexed))
 print([s.name for s in classes.classes[0].students])
+```
+
+### Get a Subject's Timetable
+```python
+# this is actually an instance of the classes/timetable class
+# this class can receive any html page with a timetable from sigarra and parse it
+plog_tt = fac.get_timetable(plog)
+
+# to parse the events (aka subject's classes) from the html
+# this uses a python version of the SigTools parsing algorithm
+# events are dicts which have a lot of attributes (from, to, name, room, ...)
+plog_events = plog_tt.get_events()
+
+```
+
+### Get Student Timetable (aka Stalker Mode)
+The isolated code for this can be found in [examples/stalker.py](examples/stalker.py), but essentialy:
+ * load the target student
+ * get the courses of this student
+ * for each course
+     * get the study plan (ids of the subjects)
+     * load every subject
+     * get the classes (students in each class) for each subject
+        * check if the target is in any of those classes
+        * save the classes the target is in
+     * produce a url to [TTS](https://ni.fe.up.pt/TTS) with the target's timetable
+
+Alternatively, one could use the `fac.get_timetable(...)` to retrieve the custom times of the target's timetable, but since TTS made this script a step quicker, I just went for it.
+
+The code is well commented and written so as to be explicit on what it does.
+
+### Sky is the limit
+This tool was built so there was a simple way to automate my endeavours into Sigarra, you can PR your own examples of tools into this section and help me and others get more out of sigpy.
+
+# Cache
+Since all of this is based on requests to Sigarra, and many requests are usually duplicates (and url's content rarely change), I have implemented a cache system that makes up for the time most requests take as, in time, most will be duplicates this can be very helpful (also if one of your scripts fails mid-execution).
+
+Anyway, the cache is on by default. To turn it off for the current session:
+```python
+# this makes all the operations on fac produce requests
+fac = get_faculty("feup", save_cache=False)
+
+# if you just want to redo some requests (typically for dynamic pages), do
+# this will not use cache, but will update it (unless save_cache is False)
+msr = fac.get_student("201403027", use_cache=False)
+```
+There is one cache file per faculty, inside the folder `faculties/FACULTY/cache/_cache.json`. You can open and edit it maually as it is a JSON mapping of a python dict (url->html), you can also delete it manually and programatically, as follows:
+```python
+# this will remove the file on disk for the current faculty only
+fac.cache.delete()
 ```
 
 # Testing
