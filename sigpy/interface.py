@@ -11,7 +11,6 @@ from getpass import getpass
 from lxml.html import fromstring, HtmlElement
 from lxml.cssselect import CSSSelector as css
 from lxml import etree
-from bs4 import BeautifulSoup
 
 from sigpy.classes import picture, timetable
 from sigpy.parser import parse_attributes, get_class_from_dict
