@@ -1,4 +1,4 @@
-# Sigpy
+# 🔨 Sigpy
 
 [![Build Status](https://travis-ci.org/msramalho/sigpy.svg)](https://travis-ci.org/msramalho/sigpy)
 
