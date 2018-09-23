@@ -186,7 +186,7 @@ fac.cache.delete()
 ```
 
 ## Verbosity
-By default, no print is done, to enable warnings about atributes that were not found in the pages parsed, do:
+By default, no print is done, to enable warnings about atributes that were not found in the parsed pages, do:
 ```python
 # obviously, this can be toggled with either True or False
 fac.set_verbose(True) # default False
