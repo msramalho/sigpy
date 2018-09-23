@@ -122,8 +122,9 @@ optionals = [fac.get_subject(s.id) for s in study_plan.optionals if s.code != ""
 plog = fac.get_subject(420002)
 
 # get all the classes for this subject (needs course, school year and semester)
-# if you miss some parameter you will see a message with all the parameters
-# notice that it is ONLE ONE parameter, which is a tuple
+# if you miss some parameter you will see a message correcting you,
+# with all the values you need to give
+# notice that it is ONLY ONE parameter, which is a (tuple)
 subject_classes = fac.get_classes((mieic.id, plog.id, get_school_year(), plog.semester))
 
 # now you can read all the students grouped by class
