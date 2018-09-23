@@ -108,7 +108,8 @@ study_plan = fac.get_study_plan((mieic.study_plan.id, mieic.study_plan.year))
 # to get ALL the information for all the mandatory subjects
 # they are grouped by year->semester->subjects
 # this will perform one request per subject
-mandatory = [fac.get_subject(s.id) for y in study_plan.years for sm in y.semesters for s in sm.subjects if s.code != ""]
+mandatory = [fac.get_subject(s.id) for y in study_plan.years
+                for sm in y.semesters for s in sm.subjects if s.code != ""]
 
 # to get ALL the information for all the optional subjects, for instance
 # this will perform one request per subject
@@ -165,7 +166,7 @@ The code is well commented and written so as to be explicit on what it does.
 ### Sky is the limit
 This tool was built so there was a simple way to automate my endeavours into Sigarra, you can PR your own examples of tools into this section and help me and others get more out of sigpy.
 
-# Cache
+## Cache
 Since all of this is based on requests to Sigarra, and many requests are usually duplicates (and url's content rarely change), I have implemented a cache system that makes up for the time most requests take as, in time, most will be duplicates this can be very helpful (also if one of your scripts fails mid-execution).
 
 Anyway, the cache is on by default. To turn it off for the current session:
@@ -181,6 +182,13 @@ There is one cache file per faculty, inside the folder `faculties/FACULTY/cache/
 ```python
 # this will remove the file on disk for the current faculty only
 fac.cache.delete()
+```
+
+## Verbosity
+By default, no print is done, to enable warnings about atributes that were not found in the pages parsed, do:
+```python
+# obviously, this can be toggled with either True or False
+fac.set_verbose(True) # default False
 ```
 
 # Testing
