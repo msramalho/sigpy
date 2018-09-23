@@ -40,7 +40,7 @@ class interface:
 		try:
 			url = config["url"] % route_tuple  # format the url with the given data
 		except Exception as e:
-			vprint("[-] Error: %s in formatting URL with your tuple %s: \n    %s" % (str(e), route_tuple, config["help"]))
+			raise Exception("[-] Error: %s in formatting URL with your tuple %s: \n    %s" % (str(e), route_tuple, config["help"]))
 		tree = fromstring(self.GET(url, use_cache))
 		return get_class_from_dict(class_name, parse_attributes(tree, config["attributes"], original))
 
