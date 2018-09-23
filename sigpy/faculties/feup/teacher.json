@@ -16,7 +16,7 @@
             "regex": "href=\"http://orcid.org/(.*?)\""
         },
         "alias": {
-            "regex": ":(.*)'\\+secure\\+'fe\\.up\\.pt'"
+            "regex": "':(.+)'\\+secure\\+'fe\\.up\\.pt'"
         },
         "email": {
             "derivate": "%s@fe.up.pt",
