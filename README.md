@@ -2,9 +2,9 @@
 
 [![Build Status](https://travis-ci.org/msramalho/sigpy.svg)](https://travis-ci.org/msramalho/sigpy)
 
-This is a Sigarra Python API based on Recursive Web Scraping Parser (wtf). Essentially, it performs requests as needed and parses the html information into objects you can use.
+This is a Sigarra Python API based on Recursive Web Scraping Parser (wtf). Essentially, it performs requests as needed (cached by default) and parses the html information into objects you can use.
 
-All of the main code is written and, other than bug fixing and enhancements, you will only need to edit `.json` files!
+All of the main code is written and, other than bug fixing, all enhancements can be done in `.json` files!
 
 
 In the end, this is yet another Sigarra-based project that I wished existed before I needed something like it.
@@ -15,12 +15,12 @@ pip install git+https://github.com/msramalho/sigpy
 ```
 
 # Examples
-Each example will hide all the code of the previous examples.
+(Each example will hide all the code of the previous examples. The complete code can be found in [examples/main.py](examples/main.py))
 
 For all the examples below, you need to start by importing sigpy:
 
 ```python
-from sigpy import get_faculty
+from sigpy import get_faculty, get_school_year
 ```
 
 ### Login to your account
@@ -129,7 +129,7 @@ subject_classes = fac.get_classes((mieic.id, plog.id, get_school_year(), plog.se
 
 # now you can read all the students grouped by class
 for c in subject_classes.classes:
-    for student in c:
+    for student in c.students:
         print("Hello %s, your email is %s)" % (student.name, student.email))
 # or simply list all the students in a given class (1st in this case (0 indexed))
 print([s.name for s in classes.classes[0].students])
@@ -145,7 +145,6 @@ plog_tt = fac.get_timetable(plog)
 # this uses a python version of the SigTools parsing algorithm
 # events are dicts which have a lot of attributes (from, to, name, room, ...)
 plog_events = plog_tt.get_events()
-
 ```
 
 ### Get Student Timetable (aka Stalker Mode)
@@ -162,7 +161,7 @@ The isolated code for this can be found in [examples/stalker.py](examples/stalke
 
 Alternatively, one could use the `fac.get_timetable(...)` to retrieve the custom times of the target's timetable, but since TTS made this script a step quicker, I just went for it.
 
-The code is well commented and written so as to be explicit on what it does.
+This script will take some time the first time you run it for each course, after that cache makes it quite fast.
 
 ### Sky is the limit
 This tool was built so there was a simple way to automate my endeavours into Sigarra, you can PR your own examples of tools into this section and help me and others get more out of sigpy.
