@@ -6,9 +6,9 @@ This is a Sigarra Python API based on Recursive Web Scraping Parser (wtf). Essen
 
 The parser and interpreters are already there. All scrapping rules are specified in `.json` files that are automatically found, processed and magically made code-accessible, so if you extend it you barely have to do anything other than editing `.json` files!!
 
-> In the end, this is yet another Sigarra-based project that I wished existed before I needed something like it.
+The concept behind this tool can be extended to other websites and one could ponder upon the interest of building something more general, like... "scraping for APIs" (and yes, there is only one `p`)... _\*cough\*LDSO\*cough\*_ 🤔
 
-The concept behind this tool can be extended to other websites and one could ponder upon the interest on building something more general... \*cough\*LDSO\*cough\*
+> In the end, this is yet another Sigarra-based project that I wished existed before I needed something like it.
 
 # Instalation
 ```bash
@@ -176,8 +176,9 @@ Anyway, the cache is on by default. To turn it off for the current session:
 fac = get_faculty("feup", save_cache=False)
 
 # if you just want to redo some requests (typically for dynamic pages), do
-# this will not use cache, but will update it (unless save_cache is False)
 msr = fac.get_student("201403027", use_cache=False)
+# this will not READ from cache, but it will UPDATE it
+# (unless save_cache is False for the fac variable)
 ```
 There is one cache file per faculty, inside the folder `faculties/FACULTY/cache/_cache.json`. You can open and edit it maually as it is a JSON mapping of a python dict (url->html), you can also delete it manually and programatically, as follows:
 ```python
