@@ -1,11 +1,12 @@
 import os
 import json
 import htmlmin
-
+from appdirs import *
 from sigpy.utils import vprint
 
+print()
 
-SAVE_TO = os.path.join(os.getenv('APPDATA'), "/sigpy/cache/%s/")  # cache folder in each faculty
+SAVE_TO = user_data_dir('sigpy', False) + "/cache/%s/"  # cache folder in each faculty
 
 
 # this class defines all the variables and methods that the faculty class should implement
