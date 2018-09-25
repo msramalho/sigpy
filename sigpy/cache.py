@@ -4,7 +4,8 @@ import htmlmin
 
 from sigpy.utils import vprint
 
-SAVE_TO = "sigpy/faculties/%s/cache/"  # cache folder in each faculty
+
+SAVE_TO = os.path.join(os.getenv('APPDATA'), "/sigpy/cache/%s/")  # cache folder in each faculty
 
 
 # this class defines all the variables and methods that the faculty class should implement
