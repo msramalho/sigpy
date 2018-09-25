@@ -23,7 +23,6 @@ class SigTest(unittest.TestCase):
         self.assertEqual(pascoal.orcid, "0000-0003-3825-3954")
         self.assertEqual(pascoal.phone, "225081316")
         self.assertEqual(pascoal.voip, "3386")
-        self.assertEqual(pascoal.email, "jpf@fe.up.pt")
 
 
 if __name__ == "__main__":
