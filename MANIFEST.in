@@ -1,0 +1,2 @@
+include sigpy/README.md
+include sigpy/faculties/*/*.json
