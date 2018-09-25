@@ -1,2 +1,2 @@
-from sigpy.interface import get_faculty
-from sigpy.utils import get_school_year
+from . interface import get_faculty
+from . utils import get_school_year

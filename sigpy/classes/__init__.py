@@ -1,3 +1,3 @@
-from .. classes.model import model
-from .. classes.picture import picture
-from .. classes.timetable import timetable
+from . model import model
+from . picture import picture
+from . timetable import timetable

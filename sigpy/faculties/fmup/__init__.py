@@ -1,5 +1,5 @@
 
-from sigpy.interface import interface
+from ... interface import interface
 
 
 class faculty(interface):

@@ -1,5 +1,5 @@
-from sigpy.interface import interface
-from sigpy.utils import get_school_year
+from ... interface import interface
+from ... utils import get_school_year
 
 
 class faculty(interface):
