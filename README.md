@@ -138,13 +138,16 @@ print([s.name for s in classes.classes[0].students])
 ### Get a Subject's Timetable
 ```python
 # this is actually an instance of the classes/timetable class
-# this class can receive any html page with a timetable from sigarra and parse it
-plog_tt = fac.get_timetable(plog)
-
-# to parse the events (aka subject's classes) from the html
+# this class can receive any html page with a timetable from sigarra and parses it
 # this uses a python version of the SigTools parsing algorithm
 # events are dicts which have a lot of attributes (from, to, name, room, ...)
-plog_events = plog_tt.get_events()
+plog_tt = fac.get_timetable(plog)
+
+# to get a json view of the events
+print(plog_tt)
+
+# to get an array of the events for further use
+plog_events = plog_tt.events
 ```
 
 ### Get Student Timetable (aka Stalker Mode)
@@ -178,7 +181,7 @@ fac = get_faculty("feup", save_cache=False)
 # this will not use cache, but will update it (unless save_cache is False)
 msr = fac.get_student("201403027", use_cache=False)
 ```
-There is one cache file per faculty, inside the folder `faculties/FACULTY/cache/_cache.json`. You can open and edit it maually as it is a JSON mapping of a python dict (url->html), you can also delete it manually and programatically, as follows:
+There is one cache file per faculty, inside the folder `%APPDATA%/sigpy/cache/"FACULTY"/_cache.json`. You can open and edit it maually as it is a JSON mapping of a python dict (url->html), you can also delete it manually and programatically, as follows:
 ```python
 # this will remove the file on disk for the current faculty only
 fac.cache.delete()

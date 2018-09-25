@@ -93,10 +93,13 @@ print([s.name for s in classes.classes[0].students])
 
 ### Get a Subject's Timetable
 # this is actually an instance of the classes/timetable class
-# this class can receive any html page with a timetable from sigarra and parse it
-plog_tt = fac.get_timetable(plog)
-
-# to parse the events (aka subject's classes) from the html
+# this class can receive any html page with a timetable from sigarra and parses it
 # this uses a python version of the SigTools parsing algorithm
 # events are dicts which have a lot of attributes (from, to, name, room, ...)
-plog_events = plog_tt.get_events()
+plog_tt = fac.get_timetable(plog)
+
+# to get a json view of the events
+print(plog_tt)
+
+# to get an array of the events for further use
+plog_events = plog_tt.events
