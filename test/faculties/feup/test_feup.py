@@ -6,7 +6,7 @@ class SigTest(unittest.TestCase):
     @classmethod
     def setUpClass(self):
         self.fac = get_faculty("feup")
-        self.fac.login("201403027")
+        #self.fac.login("201403027")
 
     def test_get_course(self):
         course = self.fac.get_course((742, get_school_year()))
