@@ -61,7 +61,6 @@ class interface:
             pid = getattr(m, "picture_id", interface.get_id(m.id))
             r = self.session.get(route % str(pid), stream=True)
             if r.status_code == 200:
-                print(r.raw)
                 return picture("%s.jpg" % pid, r.raw)
         return False
 
