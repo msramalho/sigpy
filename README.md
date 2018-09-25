@@ -6,7 +6,7 @@ This is a Sigarra Python API based on Recursive Web Scraping Parser (wtf). Essen
 
 The parser and interpreters are already there. All scrapping rules are specified in `.json` files that are automatically found, processed and magically made code-accessible, so if you extend it you barely have to do anything other than editing `.json` files!!
 
-The concept behind this tool can be extended to other websites and one could ponder upon the interest of building something more general, like... "scraping for APIs" (and yes, there is only one `p`)... _\*cough\*LDSO\*cough\*_ 🤔
+The concept behind this tool can be extended to other websites and one could ponder upon the interest of building something more general, like... "scraping for APIs" (and yes, there is only one `p`)... _\*cough\*LDSO\*cough\*_ 
 
 > In the end, this is yet another Sigarra-based project that I wished existed before I needed something like it.
 
