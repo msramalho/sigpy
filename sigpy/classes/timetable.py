@@ -1,15 +1,15 @@
 import re
+import json
 from lxml.html import fromstring  # , HtmlElement
 from lxml.etree import tostring
 from collections import defaultdict
-# from lxml.cssselect import CSSSelector as css
-# from lxml import etree
 
 
 class timetable:
 
     def __init__(self, html):
         self.tree = fromstring(html)
+        self.events = self.get_events()
 
     # return the events in this timetable page
     def get_events(self):
@@ -78,7 +78,18 @@ class timetable:
         tree = fromstring("<div>%s</div>" % html)
         class_a = tree.cssselect("span.textopequenoc a")[0]
         room_td = tree.cssselect("table.formatar td")[0]
-        teacher_a = tree.cssselect("table.formatar td.textod")[0].cssselect("a")[0]
+        teacher_a = tree.cssselect("table.formatar td.textod")[0]
+
+        # because sometimes teachers do not have url
+        if teacher_a.cssselect("a"):
+            teacher_a = teacher_a.cssselect("a")[0]
+            teacher = {
+                "name": teacher_a.get("title", ""),
+                "acronym": teacher_a.text,
+                "url": teacher_a.get("href", ""),
+            }
+        else:
+            teacher = {"name": teacher_a.text}
 
         return {
             "from": start,
@@ -95,11 +106,7 @@ class timetable:
                 "name": room_td.text,
                 "url": room_td.cssselect("a")[0].get("href", ""),
             },
-            "teacher": {
-                "name": teacher_a.get("title", ""),
-                "acronym": teacher_a.text,
-                "url": teacher_a.get("href", ""),
-            }
+            "teacher": teacher
         }
 
     # extracts overlapping events from a timetable page
@@ -136,3 +143,9 @@ class timetable:
                 "url": teacher_a.get("href", ""),
             }
         }
+
+    def __str__(self):
+        return json.dumps(self.events, ensure_ascii=False, indent=2)
+
+    def __repr__(self):
+        return self.__str__()

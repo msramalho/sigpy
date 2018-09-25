@@ -2,6 +2,7 @@
     "url": "https://sigarra.up.pt/feup/pt/func_geral.formview?p_codigo=%s",
     "help": "This URL requires: (teacher_id)",
     "picture": "https://sigarra.up.pt/feup/pt/fotografias_service.foto?pct_cod=%s",
+    "timetable": "https://sigarra.up.pt/feup/pt/hor_geral.docentes_view?pv_doc_codigo=%s&pv_ano_lectivo=%s",
     "attributes": {
         "name": {
             "regex": "<title>FEUP - (.*?)</title>"
