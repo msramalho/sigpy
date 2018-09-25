@@ -12,7 +12,7 @@ The concept behind this tool can be extended to other websites and one could pon
 
 # Demo
 
-<p align="center"><img src="https://i.imgur.com/e7bPr5c.gif" /></p>
+<p align="center"><img src="https://github.com/msramalho/sigpy/blob/master/examples/demo.gif?raw=true" /></p>
 
 # Instalation
 ```bash
