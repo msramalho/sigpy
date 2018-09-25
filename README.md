@@ -11,7 +11,8 @@ The concept behind this tool can be extended to other websites and one could pon
 > In the end, this is yet another Sigarra-based project that I wished existed before I needed something like it.
 
 # Demo
-<p aling="center"><img src="https://i.imgur.com/Ir84Veb.gif"/></p>
+
+<p align="center"><img src="https://i.imgur.com/e7bPr5c.gif" /></p>
 
 # Instalation
 ```bash
