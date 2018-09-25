@@ -7,7 +7,5 @@ install:
   - pipreqs .
   - pip install .
 script:
-  - coverage run -m unittest
-  - coverage report --include="sigpy/*"
 notifications:
   email: false
