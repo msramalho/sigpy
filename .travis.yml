@@ -3,7 +3,7 @@ python:
   - "3.6"
 cache: pip
 install:
-  - pip install coverage pipreqs
+  - pip install coverage pipreqs cssselect 
   - pipreqs .
   - pip install .
 script:
