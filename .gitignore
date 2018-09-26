@@ -7,3 +7,4 @@ images/*
 ignore/*
 \.coverage
 *_cache.json
+main.py
