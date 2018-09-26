@@ -1,0 +1,68 @@
+{
+    "url": "https://sigarra.up.pt/fmup/pt/func_geral.formview?p_codigo=%s",
+    "help": "This URL requires: (teacher_id)",
+    "picture": "https://sigarra.up.pt/fmup/pt/fotografias_service.foto?pct_cod=%s",
+    "timetable": "https://sigarra.up.pt/fmup/pt/hor_geral.docentes_view?pv_doc_codigo=%s&pv_ano_lectivo=%s",
+    "attributes": {
+        "name": {
+            "regex": "<title>FMUP - (.*?)</title>"
+        },
+        "initials": {
+            "xpath": ".//td[text()='Sigla:']/following::td[1]"
+        },
+        "state": {
+            "xpath": ".//td[text()='Estado:']/following::td[1]"
+        },
+        "orcid": {
+            "regex": "href=\"http://orcid.org/(.*?)\""
+        },
+        "alias": {
+            "regex": "':(.+)'\\+secure\\+'fe\\.up\\.pt'"
+        },
+        "email": {
+            "derivate": "%s@fe.up.pt",
+            "from": ["alias"]
+        },
+        "phone": {
+            "xpath": "(.//td[text()='Telefone:'])[2]/following::td[1]"
+        },
+        "voip": {
+            "xpath": ".//td[text()='Voip:']/following::td[1]"
+        },
+        "category": {
+            "xpath": ".//div[contains(@class, 'informacao-pessoal-funcoes')]//td[text()='Categoria:']/following::td[1]"
+        },
+        "presentation": {
+            "css": "div.informacao-pessoal-apresentacao span"
+        },
+        "rooms": {
+            "model": "room",
+            "list": "True",
+            "xpath": ".//td[text()='Salas: ']/following::td[1]",
+            "attributes": {
+                "name": {
+                    "css": "a.normal"
+                },
+                "id": {
+                    "regex": "pv_id=(.*?)\""
+                }
+            }
+        },
+        "positions": {
+            "model": "position",
+            "list": "True",
+            "css": "tr.k.d",
+            "attributes": {
+                "name": {
+                    "css": "td.k"
+                },
+                "date": {
+                    "css": "td.l"
+                },
+                "id": {
+                    "regex": "href=\".*=(.*?)\""
+                }
+            }
+        }
+    }
+}

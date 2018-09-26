@@ -1,0 +1,79 @@
+{
+    "url": "https://sigarra.up.pt/fmup/pt/cur_geral.cur_planos_estudos_view?pv_plano_id=%s&pv_ano_lectivo=%s&pv_tipo_cur_sigla=&pv_origem=CUR",
+    "help": "This URL requires: (study_plan_id, school_year)",
+    "attributes": {
+        "years": {
+            "model": "year",
+            "list": "True",
+            "css": "a#bloco_acurr_ShowOrHide + div.caixa",
+            "attributes": {
+                "name": {
+                    "regex": "class=\"caixa\" id=\"\\d*ano_(\\d+)\""
+                },
+                "semesters": {
+                    "model": "semester",
+                    "list": "True",
+                    "xpath": ".",
+                    "attributes": {
+                        "name": {
+                            "regex": "colspan=\"7\">(\\d+).*"
+                        },
+                        "subjects": {
+                            "model": "subject",
+                            "list": "True",
+                            "css": "tr.i,tr.p",
+                            "attributes": {
+                                "code": {
+                                    "xpath": ".//td[1]"
+                                },
+                                "initials": {
+                                    "xpath": ".//td[2]"
+                                },
+                                "name": {
+                                    "xpath": ".//td[3]"
+                                },
+                                "observations": {
+                                    "xpath": ".//td[4]"
+                                },
+                                "ects": {
+                                    "xpath": ".//td[5]"
+                                },
+                                "id": {
+                                    "regex": "ucurr_geral.ficha_uc_view\\?pv_ocorrencia_id=(\\d+)"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "optionals": {
+            "model": "subject",
+            "list": "True",
+            "css": ".caixa[id^=\"div_id_\"] tr.i,.caixa[id^=\"div_id_\"] tr.p",
+            "attributes": {
+                "code": {
+                    "xpath": ".//td[1]"
+                },
+                "initials": {
+                    "xpath": ".//td[2]"
+                },
+                "name": {
+                    "xpath": ".//td[3]"
+                },
+                "ects": {
+                    "xpath": ".//td[4]"
+                },
+                "year": {
+                    "xpath": ".//td[5]"
+                },
+                "semester": {
+                    "xpath": ".//td[6]"
+                },
+                "id": {
+                    "regex": "ucurr_geral.ficha_uc_view\\?pv_ocorrencia_id=(\\d+)"
+                }
+            }
+        }
+    }
+}

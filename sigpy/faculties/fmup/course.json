@@ -1,0 +1,51 @@
+{
+    "url": "https://sigarra.up.pt/fmup/pt/cur_geral.cur_view?pv_curso_id=%s&pv_ano_lectivo=%d",
+    "help": "This URL requires: (course_id, school_year)",
+    "attributes": {
+        "name": {
+            "regex": "<title>FMUP - (.+)<\/title>"
+        },
+        "cod": {
+            "xpath": ".//table[@class='formulario']/tr/td//text()[contains(., 'Código Oficial')]/following::td[1]"
+        },
+        "initials": {
+            "xpath": ".//table[@class='formulario']/tr/td//text()[contains(., 'Sigla:')]/following::td[1]"
+        },
+        "study_plan": {
+            "model": "study_plan",
+            "xpath": ".",
+            "attributes": {
+                "id": {
+                    "regex": "cur_planos_estudos_view\\?pv_plano_id=(\\d+)&"
+                },
+                "year": {
+                    "regex": "cur_planos_estudos_view\\?pv_plano_id=.*pv_ano_lectivo=(\\d+)"
+                }
+            }
+        },
+        "director": {
+            "model": "teacher",
+            "xpath": ".//table[@class='formulario']/tr[td[text()[contains(., 'Diretor:')]]]|.//table[@class='formulario']/tr[td[text()[contains(., 'Docente Responsável:')]]]",
+            "attributes": {
+                "name": {
+                    "xpath": ".//td[2]"
+                },
+                "id": {
+                    "regex": "pct_codigo=(.+?)\""
+                }
+            }
+        },
+        "assistant_director": {
+            "model": "teacher",
+            "xpath": ".//table[@class='formulario']/tr[td[text()[contains(., 'Diretor Adjunto:')]]]",
+            "attributes": {
+                "name": {
+                    "xpath": ".//td[2]"
+                },
+                "id": {
+                    "regex": "pct_codigo=(.+?)\""
+                }
+            }
+        }
+    }
+}

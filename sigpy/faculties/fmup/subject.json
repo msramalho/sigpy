@@ -1,0 +1,35 @@
+{
+    "url": "https://sigarra.up.pt/fmup/pt/ucurr_geral.ficha_uc_view?pv_ocorrencia_id=%s",
+    "timetable": "https://sigarra.up.pt/fmup/pt/hor_geral.ucurr_view?pv_ocorrencia_id=%s&pv_ano_lectivo=%s",
+    "help": "This URL requires: (subject_id)\nThe timetable schedule requires: (subject_id, school_year)",
+    "attributes": {
+        "name": {
+            "regex": "<title>FMUP - (.*?)</title>"
+        },
+        "code": {
+            "xpath": ".//td[text()='Código:']/following::td[1]"
+        },
+        "initials": {
+            "xpath": ".//td[text()='Sigla:']/following::td[1]"
+        },
+        "moodle": {
+            "regex": "moodle_portal()",
+            "boolean": "True"
+        },
+        "year":{
+            "regex": "<td rowspan=\"1\" class=\"l\">(\\d+)</td>"
+        },
+        "semester": {
+            "regex": "Ocorrência: \\d+/\\d+ - (\\d+)S"
+        },
+        "department":{
+            "model": "department",
+            "xpath": ".//h2[contains(text(),'Ocorrência:')]//following-sibling::table[@class='formulario']",
+            "attributes":{
+                "id": {
+                    "regex": "uni_geral\\.unidade_view\\?pv_unidade=(\\d+)"
+                }
+            }
+        }
+    }
+}

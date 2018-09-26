@@ -1,0 +1,57 @@
+{
+    "url": "https://sigarra.up.pt/fmup/pt/instal_geral.espaco_view?pv_id=%s",
+    "help": "This URL requires: (room_id)",
+    "picture": "https://sigarra.up.pt/fmup/pt/instal_geral2.get_mapa?pv_id=%s",
+    "attributes": {
+        "id": {
+            "regex": "href=\".*pv_id=(.*?)\""
+        },
+        "picture_id": {
+            "regex": "Mapa.*?src=\".*get_mapa\\?pv_id=(.*?)\""
+        },
+        "name": {
+            "regex": "<h1>(.+)</h1>"
+        },
+        "building": {
+            "xpath": ".//div[text()='Edifício:']/following::div[contains(@class, 'form-campo')]"
+        },
+        "floor": {
+            "xpath": ".//select[@id='pisos']/option[@selected='selected'][2]"
+        },
+        "purpose": {
+            "xpath": ".//div[text()='Utilização:']/following::div[contains(@class, 'form-campo')]"
+        },
+        "area": {
+            "xpath": ".//div[contains(text(), 'Área')]/following::div[contains(@class, 'form-campo')]"
+        },
+        "phone": {
+            "xpath": ".//div[text()='Telefone:']/following::div[contains(@class, 'form-campo')]"
+        },
+        "managers": {
+            "model": "teacher",
+            "list": "True",
+            "xpath": ".//div[text()='Responsáveis:']/following::div[contains(@class, 'form-campo')]/ul",
+            "attributes": {
+                "name": {
+                    "css": "li a"
+                },
+                "id": {
+                    "regex": "href=\".*p_codigo=(.*?)\""
+                }
+            }
+        },
+        "occupants": {
+            "model": "teacher",
+            "list": "True",
+            "xpath": ".//div[text()='Ocupante:']/following::div[contains(@class, 'form-campo')]/ul",
+            "attributes": {
+                "name": {
+                    "css": "li a"
+                },
+                "id": {
+                    "regex": "href=\".*p_codigo=(.*?)\""
+                }
+            }
+        }
+    }
+}
