@@ -31,6 +31,7 @@ for c in target.courses:  # iterate the target courses
 
         # now that we have every subject for this course, we will iterate them
         for s in subjects:
+			print(s.name)
             # load the classes (one subject has many classes, like 1MIEIC01, ...)
             classes = fac.get_classes((course.id, s.id, get_school_year(), s.semester))
             for i, cl in enumerate(classes.classes):  # iterate these classes to look for our target
