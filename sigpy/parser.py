@@ -2,7 +2,7 @@ import sys
 import re
 from lxml.html import fromstring, HtmlElement
 from lxml import cssselect
-from cssselect import CSSSelector as css
+from lxml.cssselect import CSSSelector as css
 from lxml import etree
 
 from sigpy.classes.model import model
