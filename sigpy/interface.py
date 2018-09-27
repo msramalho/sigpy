@@ -9,8 +9,6 @@ import glob
 
 from getpass import getpass
 from lxml.html import fromstring, HtmlElement
-from lxml.cssselect import CSSSelector as css
-from lxml import etree
 
 from . classes import picture, timetable
 from . parser import parse_attributes, get_class_from_dict
