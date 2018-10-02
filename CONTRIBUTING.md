@@ -16,7 +16,7 @@ Inside the sigpy folder you will find:
     * [picture.py](sigpy/classes/picture.py) (class for picture handling)
  * 📁 faculties (contains one folder per faculty)
     * 📁 feup (contains `.json` files specifying parsing rules)
-        * [__init__.py](sigpy/faculties/feup/__init__.py) (file where the urls are defined as they can be dynamic)
+        * [__init__.py](sigpy/faculties/feup/__init__.py) (simple subclass creation script, can be copy-pasted to other faculties)
         * course.json
         * room.json
         * student.json
