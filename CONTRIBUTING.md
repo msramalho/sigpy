@@ -32,7 +32,7 @@ Each faculty has its `.json` files that specify the "parseable" classes of that 
 Each of the `CLASSNAME.json` files has the following format:
 ```json
 {
-	"url": "the url for the page to parse, maybe with?get_parameters=1&...",
+    "url": "the url for the page to parse, maybe with?get_parameters=1&...",
     "help": "This URL requires: (tuple of GET parameters needed)",
     "picture": "picture (this is optional and usually just for people)",
     "attributes": {
@@ -40,7 +40,8 @@ Each of the `CLASSNAME.json` files has the following format:
         "attr2": {"regex": "some regex expression"},
         "attr3": {"xpath": "some xpath selector"},
         "attr4": {"derivate": "string for format, eg: up%s@fe.up.pt for email", "from": ["attr1"]},
-        "attr5": {"css|regex|xpath": "if we only care about if it was empty or not, regex must include a catch group", "boolean": "True"},
+        "attr5": {"css|regex|xpath": "if we only care about if it was empty or not,
+			regex must include a catch group", "boolean": "True"},
         "attr6": {
             "list": "True",
             "model": "a list of what?",
@@ -112,6 +113,5 @@ Here is a complete example of a `faculties/feup/student.json` file with useful c
             "started": {"css": "td.l", "index": 1}
         }
     }
-}
 }
 ```
