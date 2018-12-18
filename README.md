@@ -6,7 +6,7 @@ This is a Sigarra Python API based on Recursive Web Scraping Parser (wtf). Essen
 
 The parser and interpreters are already there. All scrapping rules are specified in `.json` files that are automatically found, processed and magically made code-accessible, so if you extend it you barely have to do anything other than editing `.json` files!!
 
-The concept behind this tool can be extended to other websites and one could ponder upon the interest of building something more general, like... "scraping for APIs" (and yes, there is only one `p`)... _\*cough\*LDSO\*cough\*_ 
+The concept behind this tool can be extended to other websites and one could ponder upon the interest of building something more general, like... "scraping for APIs"... _\*cough\*LDSO\*cough\*_
 
 > In the end, this is yet another Sigarra-based project that I wished existed before I needed something like it.
 
@@ -175,7 +175,7 @@ This script will take some time the first time you run it for each course, after
 This tool was built so there was a simple way to automate my endeavours into Sigarra, you can PR your own examples of tools into this section and help me and others get more out of sigpy.
 
 ## Cache
-Since all of this is based on requests to Sigarra, and many requests are usually duplicates (and url's content rarely change), I have implemented a cache system that makes up for the time most requests take as, in time, most will be duplicates this can be very helpful (also if one of your scripts fails mid-execution). 
+Since all of this is based on requests to Sigarra, and many requests are usually duplicates (and url's content rarely change), I have implemented a cache system that makes up for the time most requests take as, in time, most will be duplicates this can be very helpful (also if one of your scripts fails mid-execution).
 
 Anyway, the cache is on by default. To turn it off for the current session:
 ```python
@@ -212,6 +212,12 @@ And to get the coverage:
 coverage run -m unittest
 coverage report --include="sigpy/*"
 ```
+And to get the html report:
+```python
+coverage run -m unittest
+coverage html --include="sigpy/*"
+```
+
 # Contributing
 If you happen to use this tool you may need to extend the parsed parameters or add JSON classes or even extend it to new faculties, if you make them into pull-requests that would be awesome.
 
