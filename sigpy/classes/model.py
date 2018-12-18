@@ -1,12 +1,13 @@
 import json
 
-# class JsonClassEncoder(json.JSONEncoder):
-#     # may be needed to print classes inside other classes (that inherit from model) using json.dumps
-#     def default(self, obj):
-#         if hasattr(obj, 'json'):
-#             return obj.json()
-#         else:
-#             return json.JSONEncoder.default(self, obj)
+
+class JsonClassEncoder(json.JSONEncoder):
+    # needed to print classes inside other classes (that inherit from model) using json.dumps
+    def default(self, obj):
+        if hasattr(obj, 'json'):
+            return obj.json()
+        else:
+            return json.JSONEncoder.default(self, obj)
 
 
 class model:
@@ -19,8 +20,7 @@ class model:
         return self.__dict__
 
     def __str__(self):
-        return json.dumps(self.__dict__, ensure_ascii=False, indent=2)
-        # return json.dumps(self.__dict__, ensure_ascii=False, cls=JsonClassEncoder, indent=2)
+        return json.dumps(self.__dict__, ensure_ascii=False, cls=JsonClassEncoder, indent=2)
 
     def __repr__(self):
         return self.__str__()
