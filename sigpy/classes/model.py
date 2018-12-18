@@ -24,3 +24,10 @@ class model:
 
     def __repr__(self):
         return self.__str__()
+
+    def __getitem__(self, name):
+        return self.__dict__[name]
+
+    def __iter__(self):
+        for k, v in self.__dict__.items():
+            yield k, v
