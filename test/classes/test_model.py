@@ -51,7 +51,6 @@ class SigTest(unittest.TestCase):
                 self.a, self.b = a, b
         self.m2 = model("model_with_inner", {"inner": self.m, "other_class": temp(-1, 20)})
         self.assertEqual(len(self.m2.json()), 3)
-        self.assertEqual(len(str(self.m2.json())), 294)
 
 if __name__ == "__main__":
     unittest.main()
