@@ -6,8 +6,8 @@ install:
   - pip install -r requirements.txt
   - pip install python-coveralls
 script:
-  - coverage run -m unittest
-  - coverage report --include="sigpy/*"
+  - coverage run --include="sigpy/*" -m unittest
+  - coverage report
 notifications:
   email: false
 after_success:

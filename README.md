@@ -210,13 +210,13 @@ python -m unittest
 ```
 And to get the coverage:
 ```python
-coverage run -m unittest
-coverage report --include="sigpy/*"
+coverage run --include="sigpy/*" -m unittest
+coverage report
 ```
 And to get the html report:
 ```python
 coverage run -m unittest
-coverage html --include="sigpy/*"
+coverage html
 ```
 
 # Contributing
