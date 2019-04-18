@@ -6,6 +6,7 @@ class SigTest(unittest.TestCase):
     @classmethod
     def setUpClass(self):
         self.fac = get_faculty("feup")
+        # self.fac.cache.delete()
         #self.fac.login("201403027")
 
     def test_get_course(self):
@@ -18,11 +19,11 @@ class SigTest(unittest.TestCase):
 
     def test_get_teacher(self):
         pascoal = self.fac.get_teacher(210006)
-        print(pascoal)
         self.assertEqual(pascoal.name, "João Carlos Pascoal Faria")
         self.assertEqual(pascoal.initials, "JPF")
         self.assertEqual(pascoal.orcid, "0000-0003-3825-3954")
-        self.assertEqual(pascoal.phone, "225081316")
+        self.assertEqual(pascoal.phone, "22 508 1523")
+        self.assertEqual(pascoal.alternative_phone, "225081316")
         self.assertEqual(pascoal.voip, "3386")
 
 

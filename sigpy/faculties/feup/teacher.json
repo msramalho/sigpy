@@ -24,7 +24,10 @@
             "from": ["alias"]
         },
         "phone": {
-            "xpath": "(.//td[text()='Telefone:'])[2]/following::td[1]"
+            "xpath": ".//td[text()='Telefone:']/following::td[1]"
+        },
+        "alternative_phone": {
+            "xpath": ".//td[text()='Telf.Alt.:']/following::td[1]"
         },
         "voip": {
             "xpath": ".//td[text()='Voip:']/following::td[1]"
