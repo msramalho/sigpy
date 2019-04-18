@@ -9,3 +9,4 @@ ignore/*
 *_cache.json
 main.py
 htmlcov
+env/
