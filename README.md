@@ -1,6 +1,7 @@
 # Sigpy 🔨
 
 [![Build Status](https://travis-ci.org/msramalho/sigpy.svg)](https://travis-ci.org/msramalho/sigpy)
+[![Coverage Status](https://coveralls.io/repos/github/msramalho/sigpy/badge.svg?branch=master)](https://coveralls.io/github/msramalho/sigpy?branch=master)
 
 This is a Sigarra Python API based on Recursive Web Scraping Parser (wtf). Essentially, it performs requests as needed (cached by default) and parses the html information into objects you can use.
 
