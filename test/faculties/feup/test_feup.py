@@ -18,6 +18,7 @@ class SigTest(unittest.TestCase):
 
     def test_get_teacher(self):
         pascoal = self.fac.get_teacher(210006)
+        print(pascoal)
         self.assertEqual(pascoal.name, "João Carlos Pascoal Faria")
         self.assertEqual(pascoal.initials, "JPF")
         self.assertEqual(pascoal.orcid, "0000-0003-3825-3954")
