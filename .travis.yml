@@ -11,3 +11,5 @@ script:
   - coverage report --include="sigpy/*"
 notifications:
   email: false
+after_success:
+  - coveralls
