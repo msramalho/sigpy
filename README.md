@@ -194,7 +194,7 @@ There is one cache file per faculty, inside the folder `%APPDATA%/sigpy/cache/"F
 fac.cache.delete()
 ```
 
-Note: Pictures are not cached, only html content. This html is minify but further work can be made into cleaning it further (for instance removing inline scripts, ...)
+Note: Pictures are not cached, only html content. This html is minified but further work can be made into cleaning it further (for instance removing inline scripts, ...)
 
 ## Verbosity
 By default, no print is done, to enable warnings about atributes that were not found in the parsed pages, do:
