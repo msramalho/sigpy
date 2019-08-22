@@ -15,7 +15,7 @@ The concept behind this tool can be extended to other websites and one could pon
 
 <p align="center"><img src="https://github.com/msramalho/sigpy/blob/master/examples/demo.gif?raw=true"/></p>
 
-# Instalation
+# Installation
 ```bash
 pip install git+https://github.com/msramalho/sigpy
 ```
