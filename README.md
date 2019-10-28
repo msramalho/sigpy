@@ -176,7 +176,7 @@ This script will take some time the first time you run it for each course, after
 This tool was built so there was a simple way to automate my endeavours into Sigarra, you can PR your own examples of tools into this section and help me and others get more out of sigpy.
 
 ## Cache
-Since all of this is based on requests to Sigarra, and many requests are usually duplicates (and url's content rarely change), I have implemented a cache system that makes up for the time most requests take as, in time, most will be duplicates this can be very helpful (also if one of your scripts fails mid-execution).
+Since all of this is based on requests to Sigarra, and many requests are usually duplicates (and url's content rarely change), I have implemented a cache system that makes up for the time most requests take as, in time, most will be duplicates this can be very helpful, as it greatly diminishes request times for subsequent calls (remember that SIGARRA can be really slow). Cache is also convenient if one of your scripts fails mid-execution, because the work done until failure is preserved.
 
 Anyway, the cache is on by default. To turn it off for the current session:
 ```python
