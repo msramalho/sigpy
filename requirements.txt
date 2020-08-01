@@ -1,4 +1,4 @@
-﻿appdirs==1.4.3
+appdirs==1.4.3
 certifi==2019.3.9
 chardet==3.0.4
 coverage==4.5.3
@@ -6,6 +6,6 @@ cssselect==1.0.3
 htmlmin==0.1.12
 idna==2.7
 lxml==4.3.3
-Pillow==6.2.0
+Pillow>=7.1.0
 requests==2.20.1
 urllib3==1.24.2
